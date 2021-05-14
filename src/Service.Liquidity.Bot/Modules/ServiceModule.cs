@@ -46,7 +46,6 @@ namespace Service.Liquidity.Bot.Modules
                 .SingleInstance();
 
             serviceBusClient.Start();
-            ;
         }
     }
 }

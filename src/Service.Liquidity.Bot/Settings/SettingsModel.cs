@@ -20,7 +20,7 @@ namespace Service.Liquidity.Bot.Settings
         [YamlProperty("LiquidityBot.BotApiKey")]
         public string BotApiKey { get; set; }
 
-        [YamlProperty("LiquidityBot.BotChatId")]
-        public string BotChatId { get; set; }
+        [YamlProperty("LiquidityBot.ChatId")]
+        public string ChatId { get; set; }
     }
 }
