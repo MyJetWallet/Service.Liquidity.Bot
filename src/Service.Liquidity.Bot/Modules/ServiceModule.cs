@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using Autofac;
-using DotNetCoreDecorators;
+﻿using Autofac;
 using Microsoft.Extensions.Logging;
 using MyJetWallet.Sdk.Service;
 using MyServiceBus.Abstractions;
 using MyServiceBus.TcpClient;
 using Service.Liquidity.Bot.Services;
-using Service.Liquidity.Engine.Client.ServiceBus;
-using Service.Liquidity.Engine.Domain.Models.Portfolio;
+using Service.Liquidity.Engine.Client;
 
 namespace Service.Liquidity.Bot.Modules
 {
@@ -35,10 +32,7 @@ namespace Service.Liquidity.Bot.Modules
             var queryName = "Liquidity-Bot";
 
 
-            builder
-                .RegisterInstance(new PositionPortfolioSubscriber(serviceBusClient, queryName, TopicQueueType.Permanent))
-                .As<ISubscriber<IReadOnlyList<PositionPortfolio>>>()
-                .SingleInstance();
+            builder.RegisterPositionPortfolioSubscriber(serviceBusClient, queryName, TopicQueueType.Permanent);
 
             builder.RegisterType<PositionPortfolioNotificatorJob>()
                 .AsSelf()
