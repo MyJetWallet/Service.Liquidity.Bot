@@ -18,19 +18,10 @@ namespace Service.Liquidity.Bot.Modules
             builder.RegisterInstance(serviceBusClient).AsSelf().SingleInstance();
 
             var queueName = "Liquidity-Bot";
-
-            builder.RegisterMyServiceBusSubscriberBatch<PositionPortfolio>(serviceBusClient, PositionPortfolio.TopicName, 
-                queueName,
-                TopicQueueType.Permanent);
             
             builder.RegisterMyServiceBusSubscriberBatch<AssetPortfolioTrade>(serviceBusClient, AssetPortfolioTrade.TopicName, 
                 queueName,
                 TopicQueueType.Permanent);
-            
-            builder.RegisterType<PositionPortfolioNotificatorJob>()
-                .AsSelf()
-                .AutoActivate()
-                .SingleInstance();
             
             builder.RegisterType<PortfolioTradeNotificatorJob>()
                 .AsSelf()
