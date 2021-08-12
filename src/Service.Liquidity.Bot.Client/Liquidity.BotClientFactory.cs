@@ -4,8 +4,6 @@ using Grpc.Core.Interceptors;
 using Grpc.Net.Client;
 using JetBrains.Annotations;
 using MyJetWallet.Sdk.GrpcMetrics;
-using ProtoBuf.Grpc.Client;
-using Service.Liquidity.Bot.Grpc;
 
 namespace Service.Liquidity.Bot.Client
 {
@@ -20,7 +18,5 @@ namespace Service.Liquidity.Bot.Client
             var channel = GrpcChannel.ForAddress(assetsDictionaryGrpcServiceUrl);
             _channel = channel.Intercept(new PrometheusMetricsInterceptor());
         }
-
-        public IHelloService GetHelloService() => _channel.CreateGrpcService<IHelloService>();
     }
 }

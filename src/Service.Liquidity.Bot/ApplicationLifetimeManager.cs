@@ -8,25 +8,27 @@ namespace Service.Liquidity.Bot
     public class ApplicationLifetimeManager : ApplicationLifetimeManagerBase
     {
         private readonly ILogger<ApplicationLifetimeManager> _logger;
-        private readonly MyServiceBusTcpClient _busTcpClient;
+        private readonly MyServiceBusTcpClient _myServiceBusTcpClient;
 
-        public ApplicationLifetimeManager(IHostApplicationLifetime appLifetime, ILogger<ApplicationLifetimeManager> logger, MyServiceBusTcpClient busTcpClient)
+        public ApplicationLifetimeManager(IHostApplicationLifetime appLifetime,
+            ILogger<ApplicationLifetimeManager> logger,
+            MyServiceBusTcpClient myServiceBusTcpClient)
             : base(appLifetime)
         {
             _logger = logger;
-            _busTcpClient = busTcpClient;
+            _myServiceBusTcpClient = myServiceBusTcpClient;
         }
 
         protected override void OnStarted()
         {
             _logger.LogInformation("OnStarted has been called.");
-            _busTcpClient.Start();
+            _myServiceBusTcpClient.Start();
         }
 
         protected override void OnStopping()
         {
             _logger.LogInformation("OnStopping has been called.");
-            _busTcpClient.Stop();
+            _myServiceBusTcpClient.Stop();
         }
 
         protected override void OnStopped()
