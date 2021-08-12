@@ -29,7 +29,7 @@ namespace Service.Liquidity.Bot.Services
             {
                 try
                 {
-                    var msgText = $"Received new trade from portfolio: {JsonConvert.SerializeObject(msg)}%)";
+                    var msgText = $"Received new trade from portfolio: {JsonConvert.SerializeObject(msg, Formatting.Indented)}%)";
                     await _botApiClient.SendTextMessageAsync(Program.Settings.ChatId, msgText);
 
                     sentCounter++;
