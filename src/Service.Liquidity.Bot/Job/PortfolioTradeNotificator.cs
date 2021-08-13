@@ -7,14 +7,14 @@ using Newtonsoft.Json;
 using Service.Liquidity.Portfolio.Domain.Models;
 using Telegram.Bot;
 
-namespace Service.Liquidity.Bot.Services
+namespace Service.Liquidity.Bot.Job
 {
-    public class PortfolioTradeNotificatorJob
+    public class PortfolioTradeNotificator
     {
-        private readonly ILogger<PortfolioTradeNotificatorJob> _logger;
+        private readonly ILogger<PortfolioTradeNotificator> _logger;
         private readonly ITelegramBotClient _botApiClient;
 
-        public PortfolioTradeNotificatorJob(ILogger<PortfolioTradeNotificatorJob> logger, ISubscriber<IReadOnlyList<AssetPortfolioTrade>> subscriber)
+        public PortfolioTradeNotificator(ILogger<PortfolioTradeNotificator> logger, ISubscriber<IReadOnlyList<AssetPortfolioTrade>> subscriber)
         {
             _logger = logger;
             _botApiClient = new TelegramBotClient(Program.Settings.BotApiKey);
