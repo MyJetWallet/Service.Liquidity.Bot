@@ -7,6 +7,7 @@ using Service.Liquidity.Bot.Job;
 using Service.Liquidity.Bot.Services;
 using Service.Liquidity.Engine.Domain.Models.Portfolio;
 using Service.Liquidity.Portfolio.Domain.Models;
+using Telegram.Bot;
 
 namespace Service.Liquidity.Bot.Modules
 {
@@ -26,6 +27,11 @@ namespace Service.Liquidity.Bot.Modules
                 .RegisterType<AssetPortfolioStatusNotificator>()
                 .As<IStartable>()
                 .AutoActivate()
+                .SingleInstance();
+
+            builder
+                .RegisterInstance(new TelegramBotClient(Program.Settings.BotApiKey))
+                .As<ITelegramBotClient>()
                 .SingleInstance();
         }
     }

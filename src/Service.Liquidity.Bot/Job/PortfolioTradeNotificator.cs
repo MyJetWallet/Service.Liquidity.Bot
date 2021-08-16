@@ -14,10 +14,12 @@ namespace Service.Liquidity.Bot.Job
         private readonly ILogger<PortfolioTradeNotificator> _logger;
         private readonly ITelegramBotClient _botApiClient;
 
-        public PortfolioTradeNotificator(ILogger<PortfolioTradeNotificator> logger, ISubscriber<IReadOnlyList<AssetPortfolioTrade>> subscriber)
+        public PortfolioTradeNotificator(ILogger<PortfolioTradeNotificator> logger,
+            ISubscriber<IReadOnlyList<AssetPortfolioTrade>> subscriber,
+            ITelegramBotClient botApiClient)
         {
             _logger = logger;
-            _botApiClient = new TelegramBotClient(Program.Settings.BotApiKey);
+            _botApiClient = botApiClient;
             subscriber.Subscribe(PortfolioTradeHandler);
         }
 

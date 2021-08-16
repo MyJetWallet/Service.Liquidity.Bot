@@ -16,15 +16,27 @@ namespace Service.Liquidity.Bot.Job
         private readonly ITelegramBotClient _botApiClient;
         private readonly IMyNoSqlServerDataReader<AssetPortfolioStatusNoSql> _myNoSqlServerDataReader;
         private readonly PortfolioStatusHistoryManager _portfolioStatusHistoryManager;
+        private readonly string _chatId;
+        private readonly int _timeoutInMin;
 
         public AssetPortfolioStatusNotificator(ILogger<AssetPortfolioStatusNotificator> logger,
             IMyNoSqlServerDataReader<AssetPortfolioStatusNoSql> myNoSqlServerDataReader,
-            PortfolioStatusHistoryManager portfolioStatusHistoryManager)
+            PortfolioStatusHistoryManager portfolioStatusHistoryManager,
+            ITelegramBotClient botApiClient,
+            string chatId = "",
+            int timeoutInMin = 0)
         {
             _logger = logger;
             _myNoSqlServerDataReader = myNoSqlServerDataReader;
             _portfolioStatusHistoryManager = portfolioStatusHistoryManager;
-            _botApiClient = new TelegramBotClient(Program.Settings.BotApiKey);
+            _botApiClient = botApiClient;
+
+            _chatId = string.IsNullOrWhiteSpace(chatId)
+                ? Program.Settings.ChatId
+                : chatId;
+            _timeoutInMin = timeoutInMin == 0
+                ? Program.Settings.PortfolioStatusTimeoutInMin
+                : timeoutInMin;
         }
 
         public void Start()
@@ -32,7 +44,7 @@ namespace Service.Liquidity.Bot.Job
             _myNoSqlServerDataReader.SubscribeToUpdateEvents(HandleUpdate, HandleDelete);
         }
         
-        private void HandleUpdate(IReadOnlyList<AssetPortfolioStatusNoSql> statuses)
+        public void HandleUpdate(IReadOnlyList<AssetPortfolioStatusNoSql> statuses)
         {
             foreach (var statusNoSql in statuses)
             {
@@ -49,7 +61,7 @@ namespace Service.Liquidity.Bot.Job
                         _portfolioStatusHistoryManager.AddToMessageHistory(status);
 
                         var message = JsonConvert.SerializeObject(status, Formatting.Indented);
-                        _botApiClient.SendTextMessageAsync(Program.Settings.ChatId, message).GetAwaiter().GetResult();
+                        _botApiClient.SendTextMessageAsync(_chatId, message).GetAwaiter().GetResult();
                     }
                 }
             }
@@ -74,7 +86,7 @@ namespace Service.Liquidity.Bot.Job
         private bool CheckPushHistory(AssetPortfolioStatus status)
         {
 
-            if (status.UplStrike == 0 || status.NetUsdStrike == 0)
+            if (status.UplStrike == 0 && status.NetUsdStrike == 0)
                 return false;
             
             var lastMessage = _portfolioStatusHistoryManager.GetMessageFromHistory(status.Asset);
@@ -86,13 +98,19 @@ namespace Service.Liquidity.Bot.Job
             if (lastMessage.UplStrike == status.UplStrike &&
                 lastMessage.NetUsdStrike == status.NetUsdStrike)
             {
-                return false;
+                if (lastMessage.UpdateDate.AddMinutes(_timeoutInMin) > DateTime.UtcNow)
+                {
+                    return false;
+                }
+                return true;
             }
-            if (lastMessage.UpdateDate.AddMinutes(Program.Settings.PortfolioStatusTimeoutInMin) > DateTime.UtcNow)
+
+            if (status.NetUsdStrike > lastMessage.NetUsdStrike ||
+                status.UplStrike > lastMessage.UplStrike)
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
         private void HandleDelete(IReadOnlyList<AssetPortfolioStatusNoSql> statuses)

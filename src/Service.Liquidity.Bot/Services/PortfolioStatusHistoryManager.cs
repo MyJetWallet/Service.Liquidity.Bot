@@ -5,8 +5,8 @@ namespace Service.Liquidity.Bot.Services
 {
     public class PortfolioStatusHistoryManager
     {
-        private Dictionary<string, AssetPortfolioStatus> StatusHistory { get; set; } = new Dictionary<string, AssetPortfolioStatus>();
-        private Dictionary<string, AssetPortfolioStatus> MessageHistory { get; set; } = new Dictionary<string, AssetPortfolioStatus>();
+        public Dictionary<string, AssetPortfolioStatus> StatusHistory { get; set; } = new Dictionary<string, AssetPortfolioStatus>();
+        public Dictionary<string, AssetPortfolioStatus> MessageHistory { get; set; } = new Dictionary<string, AssetPortfolioStatus>();
         
         public void AddToMessageHistory(AssetPortfolioStatus status)
         {
