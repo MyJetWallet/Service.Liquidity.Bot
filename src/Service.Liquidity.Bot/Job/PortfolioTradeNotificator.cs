@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Autofac;
 using DotNetCoreDecorators;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -9,7 +10,7 @@ using Telegram.Bot;
 
 namespace Service.Liquidity.Bot.Job
 {
-    public class PortfolioTradeNotificator
+    public class PortfolioTradeNotificator : IStartable
     {
         private readonly ILogger<PortfolioTradeNotificator> _logger;
         private readonly ITelegramBotClient _botApiClient;
@@ -42,6 +43,10 @@ namespace Service.Liquidity.Bot.Job
                 }
             }
             _logger.LogInformation($"Messages sent: {sentCounter}");
+        }
+
+        public void Start()
+        {
         }
     }
 }

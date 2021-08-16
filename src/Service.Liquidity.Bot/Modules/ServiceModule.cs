@@ -16,7 +16,8 @@ namespace Service.Liquidity.Bot.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<PortfolioTradeNotificator>()
-                .AsSelf()
+                .As<IStartable>()
+                .AutoActivate()
                 .SingleInstance();
             
             builder.RegisterType<PortfolioStatusHistoryManager>()
