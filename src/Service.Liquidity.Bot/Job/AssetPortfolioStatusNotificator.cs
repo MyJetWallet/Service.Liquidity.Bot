@@ -98,17 +98,17 @@ namespace Service.Liquidity.Bot.Job
             if (lastMessage.UplStrike == status.UplStrike &&
                 lastMessage.NetUsdStrike == status.NetUsdStrike)
             {
-                if (lastMessage.UpdateDate.AddMinutes(_timeoutInMin) > DateTime.UtcNow)
-                {
-                    return false;
-                }
-                return true;
+                return false;
             }
 
             if (status.NetUsdStrike > lastMessage.NetUsdStrike ||
                 status.UplStrike > lastMessage.UplStrike)
             {
-                return true;
+                if (lastMessage.UpdateDate.AddMinutes(_timeoutInMin) > DateTime.UtcNow)
+                {
+                    return true;
+                }
+                return false;
             }
             return false;
         }
