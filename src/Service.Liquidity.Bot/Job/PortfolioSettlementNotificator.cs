@@ -32,7 +32,7 @@ namespace Service.Liquidity.Bot.Job
                 try
                 {
                     var msgText = $"[Notification] Settlement in portfolio." +
-                                  $" {msg.VolumeFrom} {msg.Asset} from {msg.WalletFrom} to {msg.VolumeTo} {msg.Asset} {msg.WalletTo}." +
+                                  $" {msg.VolumeFrom} {msg.Asset} from {msg.WalletFrom} to {msg.VolumeTo} {msg.Asset} in {msg.WalletTo}." +
                                   $" {msg.User} said: {msg.Comment}.";
                     await _botApiClient.SendTextMessageAsync(Program.Settings.ChatId, msgText);
 
