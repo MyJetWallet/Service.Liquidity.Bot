@@ -91,6 +91,11 @@ namespace Service.Liquidity.Bot.Job
         {
             var lastPnlMessage = _portfolioStatusHistoryManager.GetPnlMessageFromHistory(status.Asset);
 
+            if (lastPnlMessage == null)
+            {
+                return null;
+            }
+            
             if ((lastPnlMessage.Limit != status.UplStrike &&
                  status.UplStrike != 0) ||
                 (lastPnlMessage.Limit == status.UplStrike &&
@@ -109,6 +114,11 @@ namespace Service.Liquidity.Bot.Job
         {
             var lastNetUsdMessage = _portfolioStatusHistoryManager.GetNetUsdMessageFromHistory(status.Asset);
 
+            if (lastNetUsdMessage == null)
+            {
+                return null;
+            }
+            
             if ((lastNetUsdMessage.Limit != status.NetUsdStrike &&
                  status.NetUsdStrike != 0) ||
                 (lastNetUsdMessage.Limit == status.NetUsdStrike &&
