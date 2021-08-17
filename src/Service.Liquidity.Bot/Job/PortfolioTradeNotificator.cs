@@ -32,7 +32,18 @@ namespace Service.Liquidity.Bot.Job
             {
                 try
                 {
-                    var msgText = $"Received new trade from portfolio: {JsonConvert.SerializeObject(msg, Formatting.Indented)}%)";
+                    var msgText = "[Notification] Trade in portfolio." +
+                                  $" {msg.BaseVolume} {msg.BaseAsset} (${msg.BaseVolumeInUsd}) to {msg.QuoteVolume} {msg.QuoteAsset} (${msg.QuoteVolumeInUsd})." +
+                                  $" Source: spot-trades." +
+                                  $" RPL: ${msg.TotalReleasePnl}.";
+
+                    if (!string.IsNullOrWhiteSpace(msg.Comment))
+                    {
+                        msgText += $" Comment: {msg.Comment}" + 
+                                  $" User: {msg.User}";
+                    }
+                    
+                    
                     await _botApiClient.SendTextMessageAsync(Program.Settings.ChatId, msgText);
 
                     sentCounter++;
