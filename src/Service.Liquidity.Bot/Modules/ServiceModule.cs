@@ -29,6 +29,12 @@ namespace Service.Liquidity.Bot.Modules
                 .As<IStartable>()
                 .AutoActivate()
                 .SingleInstance();
+            
+            builder
+                .RegisterType<PortfolioSettlementNotificator>()
+                .As<IStartable>()
+                .AutoActivate()
+                .SingleInstance();
 
             builder
                 .RegisterInstance(new TelegramBotClient(Program.Settings.BotApiKey))

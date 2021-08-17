@@ -17,7 +17,11 @@ namespace Service.Liquidity.Bot.Modules
             
             builder.RegisterMyServiceBusSubscriberBatch<AssetPortfolioTrade>(serviceBusClient, AssetPortfolioTrade.TopicName, 
                 "Liquidity-Bot",
-                TopicQueueType.Permanent);
+                TopicQueueType.PermanentWithSingleConnection);
+                
+            builder.RegisterMyServiceBusSubscriberBatch<ManualSettlement>(serviceBusClient, ManualSettlement.TopicName, 
+                "Liquidity-Bot",
+                TopicQueueType.PermanentWithSingleConnection);
         }
     }
 }
