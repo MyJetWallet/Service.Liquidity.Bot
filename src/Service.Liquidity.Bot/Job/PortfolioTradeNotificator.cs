@@ -35,7 +35,7 @@ namespace Service.Liquidity.Bot.Job
                     var msgText = "[Notification] Trade in portfolio." +
                                   $" {msg.BaseVolume} {msg.BaseAsset} (${msg.BaseVolumeInUsd}) to {msg.QuoteVolume} {msg.QuoteAsset} (${msg.QuoteVolumeInUsd})." +
                                   $" Source: {msg.Source}." +
-                                  $" RPL: ${msg.TotalReleasePnl}.";
+                                  $" RPL: ${Math.Round(msg.TotalReleasePnl, 2)}.";
 
                     if (!string.IsNullOrWhiteSpace(msg.Comment))
                     {
