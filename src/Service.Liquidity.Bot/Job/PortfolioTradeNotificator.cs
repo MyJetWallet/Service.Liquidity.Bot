@@ -32,18 +32,23 @@ namespace Service.Liquidity.Bot.Job
             {
                 try
                 {
+                    var baseVolumeRound = Math.Round(msg.BaseVolume, 8);
+                    var baseVolumeUsdRound = Math.Round(msg.BaseVolumeInUsd, 8);
+                    var quoteVolumeRound = Math.Round(msg.QuoteVolume, 8);
+                    var quoteVolumeInUsdRound = Math.Round(msg.QuoteVolumeInUsd, 8);
+                    var totalReleasePnlRound = Math.Round(msg.TotalReleasePnl, 2);
+                    
                     var msgText = "[Notification] Trade in portfolio." +
-                                  $" {msg.BaseVolume} {msg.BaseAsset} (${msg.BaseVolumeInUsd}) to {msg.QuoteVolume} {msg.QuoteAsset} (${msg.QuoteVolumeInUsd})." +
+                                  $" {baseVolumeRound} {msg.BaseAsset} (${baseVolumeUsdRound}) to {quoteVolumeRound} {msg.QuoteAsset} (${quoteVolumeInUsdRound})." +
                                   $" Source: {msg.Source}." +
-                                  $" RPL: ${Math.Round(msg.TotalReleasePnl, 2)}.";
+                                  $" RPL: ${totalReleasePnlRound}.";
 
                     if (!string.IsNullOrWhiteSpace(msg.Comment))
                     {
                         msgText += $" Comment: {msg.Comment}" + 
                                   $" User: {msg.User}";
                     }
-                    
-                    
+
                     await _botApiClient.SendTextMessageAsync(Program.Settings.ChatId, msgText);
 
                     sentCounter++;
