@@ -33,9 +33,9 @@ namespace Service.Liquidity.Bot.Job
                 try
                 {
                     var baseVolumeRound = Math.Round(msg.BaseVolume, 8);
-                    var baseVolumeUsdRound = Math.Round(msg.BaseVolumeInUsd, 8);
+                    var baseVolumeUsdRound = Math.Round(msg.BaseVolumeInUsd, 2);
                     var quoteVolumeRound = Math.Round(msg.QuoteVolume, 8);
-                    var quoteVolumeInUsdRound = Math.Round(msg.QuoteVolumeInUsd, 8);
+                    var quoteVolumeInUsdRound = Math.Round(msg.QuoteVolumeInUsd, 2);
                     var totalReleasePnlRound = Math.Round(msg.TotalReleasePnl, 2);
                     
                     var msgText = "[Notification] Trade in portfolio." +
