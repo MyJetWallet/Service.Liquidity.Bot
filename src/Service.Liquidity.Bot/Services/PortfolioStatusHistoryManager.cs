@@ -12,22 +12,17 @@ namespace Service.Liquidity.Bot.Services
         
         public void AddToMessageHistory(StatusTelegramMessage message)
         {
-            var lastMessage = MessageHistory.FirstOrDefault(e => e.Asset == message.Asset && e.Type == message.Type);
-            if (lastMessage == null)
-            {
-                MessageHistory.Add(message);
-            }
-            lastMessage = message;
+            MessageHistory.Add(message);
         }
 
-        public StatusTelegramMessage GetPnlMessageFromHistory(string asset)
+        public List<StatusTelegramMessage> GetPnlMessageFromHistory()
         {
-            return MessageHistory.FirstOrDefault(e => e.Asset == asset && e.Type == StatusTelegramMessageType.PNL);
+            return MessageHistory.Where(e => e.Type == StatusTelegramMessageType.PNL).ToList();
         }
         
-        public StatusTelegramMessage GetNetUsdMessageFromHistory(string asset)
+        public List<StatusTelegramMessage> GetNetUsdMessages()
         {
-            return MessageHistory.FirstOrDefault(e => e.Asset == asset && e.Type == StatusTelegramMessageType.NETUSD);
+            return MessageHistory.Where(e => e.Type == StatusTelegramMessageType.NETUSD).ToList();
         }
         
         public void AddStatusToHistory(AssetPortfolioStatus status)

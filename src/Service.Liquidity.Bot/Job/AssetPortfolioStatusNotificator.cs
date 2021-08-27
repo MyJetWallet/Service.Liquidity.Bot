@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Autofac;
 using Microsoft.Extensions.Logging;
 using MyNoSqlServer.Abstractions;
@@ -89,7 +90,10 @@ namespace Service.Liquidity.Bot.Job
 
         private StatusTelegramMessage GetPnlPushMessage(AssetPortfolioStatus status)
         {
-            var lastPnlMessage = _portfolioStatusHistoryManager.GetPnlMessageFromHistory(status.Asset);
+            var lastPnlMessages = _portfolioStatusHistoryManager.GetPnlMessageFromHistory();
+
+            var lastPnlMessage =
+                lastPnlMessages.FirstOrDefault(e => e.Asset == status.Asset && e.Limit == status.UplStrike);
             
             var messageText = GetMessageText(status, StatusTelegramMessageType.PNL);
             var statusMessage = new StatusTelegramMessage(status.Asset, StatusTelegramMessageType.PNL, status.UplStrike,
@@ -104,11 +108,7 @@ namespace Service.Liquidity.Bot.Job
                 return null;
             }
             
-            if ((lastPnlMessage.Limit != status.UplStrike &&
-                 status.UplStrike != 0) ||
-                (lastPnlMessage.Limit == status.UplStrike &&
-                 status.UplStrike != 0 &&
-                 lastPnlMessage.PublishDate.AddMinutes(_timeoutInMin) < DateTime.UtcNow))
+            if (lastPnlMessage.PublishDate.AddMinutes(_timeoutInMin) < DateTime.UtcNow)
             {
                 return statusMessage;
             }
@@ -117,7 +117,10 @@ namespace Service.Liquidity.Bot.Job
         
         private StatusTelegramMessage GetNetUsdPushMessage(AssetPortfolioStatus status)
         {
-            var lastNetUsdMessage = _portfolioStatusHistoryManager.GetNetUsdMessageFromHistory(status.Asset);
+            var lastNetUsdMessages = _portfolioStatusHistoryManager.GetNetUsdMessages();
+
+            var lastNetUsdMessage =
+                lastNetUsdMessages.FirstOrDefault(e => e.Asset == status.Asset && e.Limit == status.NetUsdStrike);
             
             var messageText = GetMessageText(status, StatusTelegramMessageType.NETUSD);
             var statusMessage = new StatusTelegramMessage(status.Asset, StatusTelegramMessageType.NETUSD, status.NetUsdStrike,
@@ -132,11 +135,7 @@ namespace Service.Liquidity.Bot.Job
                 return null;
             }
             
-            if ((lastNetUsdMessage.Limit != status.NetUsdStrike &&
-                 status.NetUsdStrike != 0) ||
-                (lastNetUsdMessage.Limit == status.NetUsdStrike &&
-                 status.NetUsdStrike != 0 &&
-                 lastNetUsdMessage.PublishDate.AddMinutes(_timeoutInMin) < DateTime.UtcNow))
+            if (lastNetUsdMessage.PublishDate.AddMinutes(_timeoutInMin) < DateTime.UtcNow)
             {
                 return statusMessage;
             }
