@@ -140,10 +140,12 @@ namespace Service.Liquidity.Bot.Job
             var messageTime = lastNetUsdMessage.PublishDate.AddMinutes(_timeoutInMin);
             var messageTimeUtc = lastNetUsdMessage.PublishDate.ToUniversalTime().AddMinutes(_timeoutInMin);
             
-            _logger.LogDebug($"Message time: {messageText}; message UTC time: {messageTimeUtc}");
-            
             if (messageTimeUtc < DateTime.UtcNow)
             {
+                if (Math.Abs((messageTimeUtc - DateTime.UtcNow).TotalMinutes) > 30)
+                {
+                    _logger.LogInformation($"Message time: {messageTime}; message UTC time: {messageTimeUtc}");
+                }
                 return statusMessage;
             }
             return null;
