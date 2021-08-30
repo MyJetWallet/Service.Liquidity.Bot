@@ -108,7 +108,9 @@ namespace Service.Liquidity.Bot.Job
                 return null;
             }
             
-            if (lastPnlMessage.PublishDate.AddMinutes(_timeoutInMin) < DateTime.UtcNow)
+            var messageTimeUtc = lastPnlMessage.PublishDate.ToUniversalTime().AddMinutes(_timeoutInMin);
+            
+            if (messageTimeUtc < DateTime.UtcNow)
             {
                 return statusMessage;
             }
@@ -134,8 +136,13 @@ namespace Service.Liquidity.Bot.Job
                 }
                 return null;
             }
+
+            var messageTime = lastNetUsdMessage.PublishDate.AddMinutes(_timeoutInMin);
+            var messageTimeUtc = lastNetUsdMessage.PublishDate.ToUniversalTime().AddMinutes(_timeoutInMin);
             
-            if (lastNetUsdMessage.PublishDate.AddMinutes(_timeoutInMin) < DateTime.UtcNow)
+            _logger.LogDebug($"Message time: {messageText}; message UTC time: {messageTimeUtc}");
+            
+            if (messageTimeUtc < DateTime.UtcNow)
             {
                 return statusMessage;
             }
