@@ -144,7 +144,7 @@ namespace Service.Liquidity.Bot.Job
             {
                 if (Math.Abs((messageTimeUtc - DateTime.UtcNow).TotalMinutes) > 30)
                 {
-                    _logger.LogInformation($"Message time: {messageTime}; message UTC time: {messageTimeUtc}");
+                    _logger.LogInformation($"Message time: {messageTime}; message UTC time: {messageTimeUtc}; date time utc now: {DateTime.UtcNow}");
                 }
                 return statusMessage;
             }
