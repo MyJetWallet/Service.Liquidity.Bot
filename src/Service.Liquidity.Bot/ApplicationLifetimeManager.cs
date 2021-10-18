@@ -1,7 +1,9 @@
 ﻿using System;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MyJetWallet.Sdk.NoSql;
 using MyJetWallet.Sdk.Service;
+using MyJetWallet.Sdk.ServiceBus;
 using MyNoSqlServer.DataReader;
 using MyServiceBus.TcpClient;
 
@@ -10,45 +12,32 @@ namespace Service.Liquidity.Bot
     public class ApplicationLifetimeManager : ApplicationLifetimeManagerBase
     {
         private readonly ILogger<ApplicationLifetimeManager> _logger;
-        private readonly MyServiceBusTcpClient _myServiceBusTcpClient;
-        private readonly MyNoSqlTcpClient[] _myNoSqlTcpClientManagers;
+        private readonly ServiceBusLifeTime _myServiceBusTcpClientLifeTime;
+        private readonly MyNoSqlClientLifeTime _myNoSqlTcpClientLifeTime;
 
         public ApplicationLifetimeManager(IHostApplicationLifetime appLifetime,
             ILogger<ApplicationLifetimeManager> logger,
-            MyServiceBusTcpClient myServiceBusTcpClient,
-            MyNoSqlTcpClient[] myNoSqlTcpClientManagers)
+            ServiceBusLifeTime myServiceBusTcpClientLifeTime,
+            MyNoSqlClientLifeTime myNoSqlTcpClientLifeTime)
             : base(appLifetime)
         {
             _logger = logger;
-            _myServiceBusTcpClient = myServiceBusTcpClient;
-            _myNoSqlTcpClientManagers = myNoSqlTcpClientManagers;
+            _myServiceBusTcpClientLifeTime = myServiceBusTcpClientLifeTime;
+            _myNoSqlTcpClientLifeTime = myNoSqlTcpClientLifeTime;
         }
 
         protected override void OnStarted()
         {
             _logger.LogInformation("OnStarted has been called.");
-            foreach(var client in _myNoSqlTcpClientManagers)
-            {
-                client.Start();
-            }
-            _myServiceBusTcpClient.Start();
+            _myNoSqlTcpClientLifeTime.Start();
+            _myServiceBusTcpClientLifeTime.Start();
         }
 
         protected override void OnStopping()
         {
             _logger.LogInformation("OnStopping has been called.");
-            _myServiceBusTcpClient.Stop();
-            foreach(var client in _myNoSqlTcpClientManagers)
-            {
-                try
-                {
-                    client.Stop();
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-            }
+            _myServiceBusTcpClientLifeTime.Stop();
+            _myNoSqlTcpClientLifeTime.Stop();
         }
 
         protected override void OnStopped()
