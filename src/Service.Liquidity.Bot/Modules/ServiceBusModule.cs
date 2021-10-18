@@ -11,9 +11,7 @@ namespace Service.Liquidity.Bot.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var serviceBusClient = new MyServiceBusTcpClient(Program.ReloadedSettings(e => e.SpotServiceBusHostPort), ApplicationEnvironment.HostName);
-
-            builder.RegisterInstance(serviceBusClient).AsSelf().SingleInstance();
+            var serviceBusClient = builder.RegisterMyServiceBusTcpClient(Program.ReloadedSettings(e => e.SpotServiceBusHostPort), Program.LogFactory);
             
             builder.RegisterMyServiceBusSubscriberBatch<AssetPortfolioTrade>(serviceBusClient, AssetPortfolioTrade.TopicName, 
                 "Liquidity-Bot",
