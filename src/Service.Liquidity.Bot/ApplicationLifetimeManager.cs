@@ -1,11 +1,8 @@
-﻿using System;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MyJetWallet.Sdk.NoSql;
 using MyJetWallet.Sdk.Service;
 using MyJetWallet.Sdk.ServiceBus;
-using MyNoSqlServer.DataReader;
-using MyServiceBus.TcpClient;
 
 namespace Service.Liquidity.Bot
 {

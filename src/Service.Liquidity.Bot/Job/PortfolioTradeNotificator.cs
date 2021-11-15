@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Autofac;
 using DotNetCoreDecorators;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Service.Liquidity.Portfolio.Domain.Models;
 using Telegram.Bot;
 

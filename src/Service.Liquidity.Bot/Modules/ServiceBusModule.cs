@@ -1,8 +1,6 @@
 using Autofac;
-using MyJetWallet.Sdk.Service;
 using MyJetWallet.Sdk.ServiceBus;
 using MyServiceBus.Abstractions;
-using MyServiceBus.TcpClient;
 using Service.Liquidity.Portfolio.Domain.Models;
 
 namespace Service.Liquidity.Bot.Modules

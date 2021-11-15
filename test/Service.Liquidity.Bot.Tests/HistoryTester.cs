@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using Service.Liquidity.Bot.Job;
 using Service.Liquidity.Bot.Services;
-using Service.Liquidity.Bot.Settings;
 using Service.Liquidity.Bot.Tests.Mock;
 using Service.Liquidity.Monitoring.Domain.Models;
 
