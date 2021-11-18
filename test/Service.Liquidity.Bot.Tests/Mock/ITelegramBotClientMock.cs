@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
+using Telegram.Bot.Exceptions;
 using Telegram.Bot.Requests.Abstractions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -76,7 +77,7 @@ namespace Service.Liquidity.Bot.Tests.Mock
             throw new NotImplementedException();
         }
 
-        public async Task<Message> SendTextMessageAsync(ChatId chatId, string text, ParseMode parseMode = ParseMode.Default, IEnumerable<MessageEntity> entities = null,
+        public async Task<Message> SendTextMessageAsync(ChatId chatId, string text, ParseMode parseMode = ParseMode.Markdown, IEnumerable<MessageEntity> entities = null,
             bool disableWebPagePreview = false, bool disableNotification = false, int replyToMessageId = 0,
             bool allowSendingWithoutReply = false, IReplyMarkup replyMarkup = null,
             CancellationToken cancellationToken = new CancellationToken())
@@ -91,14 +92,14 @@ namespace Service.Liquidity.Bot.Tests.Mock
         }
 
         public Task<MessageId> CopyMessageAsync(ChatId chatId, ChatId fromChatId, int messageId, string caption = null,
-            ParseMode parseMode = ParseMode.Default, IEnumerable<MessageEntity> captionEntities = null, int replyToMessageId = 0,
+            ParseMode parseMode = ParseMode.Markdown, IEnumerable<MessageEntity> captionEntities = null, int replyToMessageId = 0,
             bool disableNotification = false, IReplyMarkup replyMarkup = null,
             CancellationToken cancellationToken = new CancellationToken())
         {
             throw new NotImplementedException();
         }
 
-        public Task<Message> SendPhotoAsync(ChatId chatId, InputOnlineFile photo, string caption = null, ParseMode parseMode = ParseMode.Default,
+        public Task<Message> SendPhotoAsync(ChatId chatId, InputOnlineFile photo, string caption = null, ParseMode parseMode = ParseMode.Markdown,
             IEnumerable<MessageEntity> captionEntities = null, bool disableNotification = false, int replyToMessageId = 0,
             bool allowSendingWithoutReply = false, IReplyMarkup replyMarkup = null,
             CancellationToken cancellationToken = new CancellationToken())
@@ -106,7 +107,7 @@ namespace Service.Liquidity.Bot.Tests.Mock
             throw new NotImplementedException();
         }
 
-        public Task<Message> SendAudioAsync(ChatId chatId, InputOnlineFile audio, string caption = null, ParseMode parseMode = ParseMode.Default,
+        public Task<Message> SendAudioAsync(ChatId chatId, InputOnlineFile audio, string caption = null, ParseMode parseMode = ParseMode.Markdown,
             IEnumerable<MessageEntity> captionEntities = null, int duration = 0, string performer = null, string title = null,
             InputMedia thumb = null, bool disableNotification = false, int replyToMessageId = 0,
             bool allowSendingWithoutReply = false, IReplyMarkup replyMarkup = null,
@@ -116,7 +117,7 @@ namespace Service.Liquidity.Bot.Tests.Mock
         }
 
         public Task<Message> SendDocumentAsync(ChatId chatId, InputOnlineFile document, InputMedia thumb = null, string caption = null,
-            ParseMode parseMode = ParseMode.Default, IEnumerable<MessageEntity> captionEntities = null, bool disableContentTypeDetection = false,
+            ParseMode parseMode = ParseMode.Markdown, IEnumerable<MessageEntity> captionEntities = null, bool disableContentTypeDetection = false,
             bool disableNotification = false, int replyToMessageId = 0, bool allowSendingWithoutReply = false,
             IReplyMarkup replyMarkup = null, CancellationToken cancellationToken = new CancellationToken())
         {
@@ -131,7 +132,7 @@ namespace Service.Liquidity.Bot.Tests.Mock
         }
 
         public Task<Message> SendVideoAsync(ChatId chatId, InputOnlineFile video, int duration = 0, int width = 0, int height = 0,
-            InputMedia thumb = null, string caption = null, ParseMode parseMode = ParseMode.Default, IEnumerable<MessageEntity> captionEntities = null,
+            InputMedia thumb = null, string caption = null, ParseMode parseMode = ParseMode.Markdown, IEnumerable<MessageEntity> captionEntities = null,
             bool supportsStreaming = false, bool disableNotification = false, int replyToMessageId = 0,
             bool allowSendingWithoutReply = false, IReplyMarkup replyMarkup = null,
             CancellationToken cancellationToken = new CancellationToken())
@@ -140,14 +141,14 @@ namespace Service.Liquidity.Bot.Tests.Mock
         }
 
         public Task<Message> SendAnimationAsync(ChatId chatId, InputOnlineFile animation, int duration = 0, int width = 0, int height = 0,
-            InputMedia thumb = null, string caption = null, ParseMode parseMode = ParseMode.Default, IEnumerable<MessageEntity> captionEntities = null,
+            InputMedia thumb = null, string caption = null, ParseMode parseMode = ParseMode.Markdown, IEnumerable<MessageEntity> captionEntities = null,
             bool disableNotification = false, int replyToMessageId = 0, bool allowSendingWithoutReply = false,
             IReplyMarkup replyMarkup = null, CancellationToken cancellationToken = new CancellationToken())
         {
             throw new NotImplementedException();
         }
 
-        public Task<Message> SendVoiceAsync(ChatId chatId, InputOnlineFile voice, string caption = null, ParseMode parseMode = ParseMode.Default,
+        public Task<Message> SendVoiceAsync(ChatId chatId, InputOnlineFile voice, string caption = null, ParseMode parseMode = ParseMode.Markdown,
             IEnumerable<MessageEntity> captionEntities = null, int duration = 0, bool disableNotification = false, int replyToMessageId = 0,
             bool allowSendingWithoutReply = false, IReplyMarkup replyMarkup = null,
             CancellationToken cancellationToken = new CancellationToken())
@@ -195,7 +196,7 @@ namespace Service.Liquidity.Bot.Tests.Mock
 
         public Task<Message> SendPollAsync(ChatId chatId, string question, IEnumerable<string> options, bool? isAnonymous = null, PollType? type = null,
             bool? allowsMultipleAnswers = null, int? correctOptionId = null, string explanation = null,
-            ParseMode explanationParseMode = ParseMode.Default, IEnumerable<MessageEntity> explanationEntities = null, int? openPeriod = null,
+            ParseMode explanationParseMode = ParseMode.Markdown, IEnumerable<MessageEntity> explanationEntities = null, int? openPeriod = null,
             DateTime? closeDate = null, bool? isClosed = null, bool disableNotification = false, int replyToMessageId = 0,
             bool allowSendingWithoutReply = false, IReplyMarkup replyMarkup = null,
             CancellationToken cancellationToken = new CancellationToken())
@@ -319,14 +320,14 @@ namespace Service.Liquidity.Bot.Tests.Mock
             throw new NotImplementedException();
         }
 
-        public Task<Message> EditMessageTextAsync(ChatId chatId, int messageId, string text, ParseMode parseMode = ParseMode.Default,
+        public Task<Message> EditMessageTextAsync(ChatId chatId, int messageId, string text, ParseMode parseMode = ParseMode.Markdown,
             IEnumerable<MessageEntity> entities = null, bool disableWebPagePreview = false, InlineKeyboardMarkup replyMarkup = null,
             CancellationToken cancellationToken = new CancellationToken())
         {
             throw new NotImplementedException();
         }
 
-        public Task EditMessageTextAsync(string inlineMessageId, string text, ParseMode parseMode = ParseMode.Default,
+        public Task EditMessageTextAsync(string inlineMessageId, string text, ParseMode parseMode = ParseMode.Markdown,
             IEnumerable<MessageEntity> entities = null, bool disableWebPagePreview = false, InlineKeyboardMarkup replyMarkup = null,
             CancellationToken cancellationToken = new CancellationToken())
         {
@@ -345,14 +346,14 @@ namespace Service.Liquidity.Bot.Tests.Mock
             throw new NotImplementedException();
         }
 
-        public Task<Message> EditMessageCaptionAsync(ChatId chatId, int messageId, string caption, ParseMode parseMode = ParseMode.Default,
+        public Task<Message> EditMessageCaptionAsync(ChatId chatId, int messageId, string caption, ParseMode parseMode = ParseMode.Markdown,
             IEnumerable<MessageEntity> captionEntities = null, InlineKeyboardMarkup replyMarkup = null,
             CancellationToken cancellationToken = new CancellationToken())
         {
             throw new NotImplementedException();
         }
 
-        public Task EditMessageCaptionAsync(string inlineMessageId, string caption, ParseMode parseMode = ParseMode.Default,
+        public Task EditMessageCaptionAsync(string inlineMessageId, string caption, ParseMode parseMode = ParseMode.Markdown,
             IEnumerable<MessageEntity> captionEntities = null, InlineKeyboardMarkup replyMarkup = null,
             CancellationToken cancellationToken = new CancellationToken())
         {
@@ -408,12 +409,6 @@ namespace Service.Liquidity.Bot.Tests.Mock
             throw new NotImplementedException();
         }
 
-        public Task AnswerInlineQueryAsync(string inlineQueryId, IEnumerable<InlineQueryResultBase> results, int? cacheTime = null, bool isPersonal = false,
-            string nextOffset = null, string switchPmText = null, string switchPmParameter = null,
-            CancellationToken cancellationToken = new CancellationToken())
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<Message> SendInvoiceAsync(long chatId, string title, string description, string payload, string providerToken,
             string currency, IEnumerable<LabeledPrice> prices, int maxTipAmount = 0, int[] suggestedTipAmounts = null,
@@ -611,17 +606,10 @@ namespace Service.Liquidity.Bot.Tests.Mock
 
         public long? BotId { get; }
         public TimeSpan Timeout { get; set; }
+        public IExceptionParser ExceptionsParser { get; set; }
         public bool IsReceiving { get; }
         public int MessageOffset { get; set; }
         public event AsyncEventHandler<ApiRequestEventArgs> OnMakingApiRequest;
         public event AsyncEventHandler<ApiResponseEventArgs> OnApiResponseReceived;
-        public event EventHandler<UpdateEventArgs> OnUpdate;
-        public event EventHandler<MessageEventArgs> OnMessage;
-        public event EventHandler<MessageEventArgs> OnMessageEdited;
-        public event EventHandler<InlineQueryEventArgs> OnInlineQuery;
-        public event EventHandler<ChosenInlineResultEventArgs> OnInlineResultChosen;
-        public event EventHandler<CallbackQueryEventArgs> OnCallbackQuery;
-        public event EventHandler<ReceiveErrorEventArgs> OnReceiveError;
-        public event EventHandler<ReceiveGeneralErrorEventArgs> OnReceiveGeneralError;
     }
 }
