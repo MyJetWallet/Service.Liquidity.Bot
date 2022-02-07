@@ -1,6 +1,5 @@
 ﻿using Autofac;
-using Service.Liquidity.Bot.Job;
-using Service.Liquidity.Bot.Services;
+using Service.Liquidity.Bot.Subscribers;
 using Telegram.Bot;
 
 namespace Service.Liquidity.Bot.Modules
@@ -9,31 +8,16 @@ namespace Service.Liquidity.Bot.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<PortfolioTradeNotificator>()
-                .As<IStartable>()
-                .AutoActivate()
-                .SingleInstance();
-            
-            builder.RegisterType<PortfolioStatusHistoryManager>()
-                .AsSelf()
-                .SingleInstance();
-
-            builder
-                .RegisterType<AssetPortfolioStatusNotificator>()
-                .As<IStartable>()
-                .AutoActivate()
-                .SingleInstance();
-            
-            builder
-                .RegisterType<PortfolioSettlementNotificator>()
-                .As<IStartable>()
-                .AutoActivate()
-                .SingleInstance();
 
             builder
                 .RegisterInstance(new TelegramBotClient(Program.Settings.BotApiKey))
                 .As<ITelegramBotClient>()
                 .SingleInstance();
+            
+            builder.RegisterType<LiquidityMessageSubscriber>()
+                .SingleInstance()
+                .AutoActivate();
+
         }
     }
 }

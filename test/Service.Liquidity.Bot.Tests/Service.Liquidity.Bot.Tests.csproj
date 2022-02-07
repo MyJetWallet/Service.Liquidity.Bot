@@ -16,4 +16,8 @@
     <ProjectReference Include="..\..\src\Service.Liquidity.Bot\Service.Liquidity.Bot.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="HistoryTester.cs" />
+  </ItemGroup>
+
 </Project>

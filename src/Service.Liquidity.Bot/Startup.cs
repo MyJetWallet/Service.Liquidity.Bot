@@ -53,9 +53,9 @@ namespace Service.Liquidity.Bot
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<NoSqlModule>();
+            builder.RegisterModule<ServiceBusModule>();
             builder.RegisterModule<SettingsModule>();
             builder.RegisterModule<ServiceModule>();
-            builder.RegisterModule<ServiceBusModule>();
         }
     }
 }
