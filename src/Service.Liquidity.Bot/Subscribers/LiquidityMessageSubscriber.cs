@@ -28,7 +28,8 @@ namespace Service.Liquidity.Bot.Subscribers
             
             try
             {
-                await _botApiClient.SendTextMessageAsync(Program.Settings.ChatId, message.Message);
+                var uniMessage = $"{message.Message}";
+                await _botApiClient.SendTextMessageAsync(Program.Settings.ChatId, uniMessage);
             }
             catch (Exception e)
             {
