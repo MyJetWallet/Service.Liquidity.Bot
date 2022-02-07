@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DotNetCoreDecorators;
 using Microsoft.Extensions.Logging;
+using MyJetWallet.Sdk.Service;
 using Service.Liquidity.Monitoring.Domain.Models;
 using Telegram.Bot;
 
@@ -28,8 +29,10 @@ namespace Service.Liquidity.Bot.Subscribers
             
             try
             {
-                var uniMessage = $"{message.Message}";
-                await _botApiClient.SendTextMessageAsync(Program.Settings.ChatId, uniMessage);
+                var uniMessage = message.Message;
+                _logger.LogInformation("Ready to send message {message}", uniMessage);
+                var result = await _botApiClient.SendTextMessageAsync(Program.Settings.ChatId, uniMessage);
+                _logger.LogInformation("Message was sent with id {id}", result.MessageId);
             }
             catch (Exception e)
             {
