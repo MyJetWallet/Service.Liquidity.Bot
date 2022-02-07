@@ -47,29 +47,29 @@ namespace Service.Liquidity.Bot.Job
         
         public void HandleUpdate(IReadOnlyList<AssetPortfolioStatusNoSql> statuses)
         {
-            foreach (var statusNoSql in statuses)
-            {
-                var status = statusNoSql.AssetStatus;
-                
-                var changed = CheckIsChanged(status);
-                if (changed)
-                {
-                    _portfolioStatusHistoryManager.AddStatusToHistory(status);
-                    
-                    var pnlMessage = GetPnlPushMessage(status);
-                    var netUsdMessage = GetNetUsdPushMessage(status);
-                    if (pnlMessage != null)
-                    {
-                        _portfolioStatusHistoryManager.AddToMessageHistory(pnlMessage);
-                        _botApiClient.SendTextMessageAsync(_chatId, pnlMessage.MessageText).GetAwaiter().GetResult();
-                    }
-                    if (netUsdMessage != null)
-                    {
-                        _portfolioStatusHistoryManager.AddToMessageHistory(netUsdMessage);
-                        _botApiClient.SendTextMessageAsync(_chatId, netUsdMessage.MessageText).GetAwaiter().GetResult();
-                    }
-                }
-            }
+            // foreach (var statusNoSql in statuses)
+            // {
+            //     var status = statusNoSql.AssetStatus;
+            //     
+            //     var changed = CheckIsChanged(status);
+            //     if (changed)
+            //     {
+            //         _portfolioStatusHistoryManager.AddStatusToHistory(status);
+            //         
+            //         var pnlMessage = GetPnlPushMessage(status);
+            //         var netUsdMessage = GetNetUsdPushMessage(status);
+            //         if (pnlMessage != null)
+            //         {
+            //             _portfolioStatusHistoryManager.AddToMessageHistory(pnlMessage);
+            //             _botApiClient.SendTextMessageAsync(_chatId, pnlMessage.MessageText).GetAwaiter().GetResult();
+            //         }
+            //         if (netUsdMessage != null)
+            //         {
+            //             _portfolioStatusHistoryManager.AddToMessageHistory(netUsdMessage);
+            //             _botApiClient.SendTextMessageAsync(_chatId, netUsdMessage.MessageText).GetAwaiter().GetResult();
+            //         }
+            //     }
+            // }
         }
 
         private bool CheckIsChanged(AssetPortfolioStatus status)
@@ -80,89 +80,90 @@ namespace Service.Liquidity.Bot.Job
             {
                 return true;
             }
-            if (lastStatus.UplStrike != status.UplStrike ||
-                lastStatus.NetUsdStrike != status.NetUsdStrike)
+            if (lastStatus.Velocity.IsAlarm != status.Velocity.IsAlarm ||
+                lastStatus.VelocityRisk.IsAlarm != status.VelocityRisk.IsAlarm)
             {
                 return true;
             }
             return false;
         }
 
-        private StatusTelegramMessage GetPnlPushMessage(AssetPortfolioStatus status)
-        {
-            var lastPnlMessages = _portfolioStatusHistoryManager.GetPnlMessageFromHistory();
-
-            var lastPnlMessage =
-                lastPnlMessages.FirstOrDefault(e => e.Asset == status.Asset && e.Limit == status.UplStrike);
-            
-            var messageText = GetMessageText(status, StatusTelegramMessageType.PNL);
-            var statusMessage = new StatusTelegramMessage(status.Asset, StatusTelegramMessageType.PNL, status.UplStrike,
-                status.Upl, status.UpdateDate, messageText);
-
-            if (lastPnlMessage == null)
-            {
-                if (status.UplStrike != 0)
-                {
-                    return statusMessage;
-                }
-                return null;
-            }
-            
-            var messageTimeUtc = lastPnlMessage.PublishDate.ToUniversalTime().AddMinutes(_timeoutInMin);
-            
-            if (messageTimeUtc < DateTime.UtcNow)
-            {
-                return statusMessage;
-            }
-            return null;
-        }
+        // private StatusTelegramMessage GetPnlPushMessage(AssetPortfolioStatus status)
+        // {
+        //     var lastPnlMessages = _portfolioStatusHistoryManager.GetPnlMessageFromHistory();
+        //
+        //     var lastPnlMessage =
+        //         lastPnlMessages.FirstOrDefault(e => e.Asset == status.Asset && e.Limit == status.Velocity.CurrentValue);
+        //     
+        //     var messageText = GetMessageText(status, StatusTelegramMessageType.PNL);
+        //     var statusMessage = new StatusTelegramMessage(status.Asset, StatusTelegramMessageType.PNL, status.Velocity.IsAlarm,
+        //         status.Upl, status.UpdateDate, messageText);
+        //
+        //     if (lastPnlMessage == null)
+        //     {
+        //         if (status.UplStrike != 0)
+        //         {
+        //             return statusMessage;
+        //         }
+        //         return null;
+        //     }
+        //     
+        //     var messageTimeUtc = lastPnlMessage.PublishDate.ToUniversalTime().AddMinutes(_timeoutInMin);
+        //     
+        //     if (messageTimeUtc < DateTime.UtcNow)
+        //     {
+        //         return statusMessage;
+        //     }
+        //     return null;
+        // }
         
         private StatusTelegramMessage GetNetUsdPushMessage(AssetPortfolioStatus status)
         {
-            var lastNetUsdMessages = _portfolioStatusHistoryManager.GetNetUsdMessages();
-
-            var lastNetUsdMessage =
-                lastNetUsdMessages.FirstOrDefault(e => e.Asset == status.Asset && e.Limit == status.NetUsdStrike);
-            
-            var messageText = GetMessageText(status, StatusTelegramMessageType.NETUSD);
-            var statusMessage = new StatusTelegramMessage(status.Asset, StatusTelegramMessageType.NETUSD, status.NetUsdStrike,
-                status.NetUsd, status.UpdateDate, messageText);
-            
-            if (lastNetUsdMessage == null)
-            {
-                if (status.NetUsdStrike != 0)
-                {
-                    return statusMessage;
-                }
-                return null;
-            }
-
-            var messageTime = lastNetUsdMessage.PublishDate.AddMinutes(_timeoutInMin);
-            var messageTimeUtc = lastNetUsdMessage.PublishDate.ToUniversalTime().AddMinutes(_timeoutInMin);
-            
-            if (messageTimeUtc < DateTime.UtcNow)
-            {
-                if (Math.Abs((messageTimeUtc - DateTime.UtcNow).TotalMinutes) > 30)
-                {
-                    _logger.LogInformation($"Message time: {messageTime}; message UTC time: {messageTimeUtc}; date time utc now: {DateTime.UtcNow}");
-                }
-                return statusMessage;
-            }
+            // var lastNetUsdMessages = _portfolioStatusHistoryManager.GetNetUsdMessages();
+            //
+            // var lastNetUsdMessage =
+            //     lastNetUsdMessages.FirstOrDefault(e => e.Asset == status.Asset && e.Limit == status.NetUsdStrike);
+            //
+            // var messageText = GetMessageText(status, StatusTelegramMessageType.NETUSD);
+            // var statusMessage = new StatusTelegramMessage(status.Asset, StatusTelegramMessageType.NETUSD, status.NetUsdStrike,
+            //     status.NetUsd, status.UpdateDate, messageText);
+            //
+            // if (lastNetUsdMessage == null)
+            // {
+            //     if (status.NetUsdStrike != 0)
+            //     {
+            //         return statusMessage;
+            //     }
+            //     return null;
+            // }
+            //
+            // var messageTime = lastNetUsdMessage.PublishDate.AddMinutes(_timeoutInMin);
+            // var messageTimeUtc = lastNetUsdMessage.PublishDate.ToUniversalTime().AddMinutes(_timeoutInMin);
+            //
+            // if (messageTimeUtc < DateTime.UtcNow)
+            // {
+            //     if (Math.Abs((messageTimeUtc - DateTime.UtcNow).TotalMinutes) > 30)
+            //     {
+            //         _logger.LogInformation($"Message time: {messageTime}; message UTC time: {messageTimeUtc}; date time utc now: {DateTime.UtcNow}");
+            //     }
+            //     return statusMessage;
+            // }
             return null;
         }
 
         private string GetMessageText(AssetPortfolioStatus status, StatusTelegramMessageType type)
         {
-            switch (type)
-            {
-                case StatusTelegramMessageType.PNL:
-                    return $"[ALERT] Hit {status.Asset} Unrealize PL = ${Math.Round(status.Upl, 2)}, Limit = ${status.UplStrike}.";
-                case StatusTelegramMessageType.NETUSD:
-                    return $"[ALERT] Hit {status.Asset} NetUSD = ${Math.Round(status.NetUsd, 2)}, Limit = ${status.NetUsdStrike}.";
-                default:
-                    _logger.LogError($"GetMessageText fail with status: {JsonConvert.SerializeObject(status)} and type: {type}");
-                    return string.Empty;
-            }
+            // switch (type)
+            // {
+            //     case StatusTelegramMessageType.PNL:
+            //         return $"[ALERT] Hit {status.Asset} Unrealize PL = ${Math.Round(status.Upl, 2)}, Limit = ${status.UplStrike}.";
+            //     case StatusTelegramMessageType.NETUSD:
+            //         return $"[ALERT] Hit {status.Asset} NetUSD = ${Math.Round(status.NetUsd, 2)}, Limit = ${status.NetUsdStrike}.";
+            //     default:
+            //         _logger.LogError($"GetMessageText fail with status: {JsonConvert.SerializeObject(status)} and type: {type}");
+            //         return string.Empty;
+            // }
+            return string.Empty;
         }
 
         private void HandleDelete(IReadOnlyList<AssetPortfolioStatusNoSql> statuses)
