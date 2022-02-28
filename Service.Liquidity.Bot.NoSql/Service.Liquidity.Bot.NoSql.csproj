@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\src\Service.Liquidity.Bot.Domain.Models\Service.Liquidity.Bot.Domain.Models.csproj" />
+      <ProjectReference Include="..\src\Service.Liquidity.Bot.Domain\Service.Liquidity.Bot.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MyJetWallet.Sdk.NoSql" Version="2.1.2" />
+    </ItemGroup>
+
+</Project>

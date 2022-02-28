@@ -12,8 +12,4 @@
     <ProjectReference Include="..\Service.Liquidity.Bot.Domain.Models\Service.Liquidity.Bot.Domain.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models" />
-  </ItemGroup>
-
 </Project>

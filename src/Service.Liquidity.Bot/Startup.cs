@@ -8,7 +8,9 @@ using Autofac;
 using MyJetWallet.Sdk.GrpcSchema;
 using MyJetWallet.Sdk.Service;
 using Prometheus;
+using Service.Liquidity.Bot.Grpc;
 using Service.Liquidity.Bot.Modules;
+using Service.Liquidity.Bot.Services;
 using SimpleTrading.ServiceStatusReporterConnector;
 
 namespace Service.Liquidity.Bot
@@ -41,6 +43,8 @@ namespace Service.Liquidity.Bot
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGrpcSchema<NotificationChannelsService, INotificationChannelsService>();
+
                 endpoints.MapGrpcSchemaRegistry();
 
                 endpoints.MapGet("/", async context =>
@@ -52,7 +56,7 @@ namespace Service.Liquidity.Bot
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            //builder.RegisterModule<NoSqlModule>();
+            builder.RegisterModule<NoSqlModule>();
             builder.RegisterModule<ServiceBusModule>();
             builder.RegisterModule<SettingsModule>();
             builder.RegisterModule<ServiceModule>();

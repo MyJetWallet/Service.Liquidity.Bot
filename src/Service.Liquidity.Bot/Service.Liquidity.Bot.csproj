@@ -30,6 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Service.Liquidity.Bot.NoSql\Service.Liquidity.Bot.NoSql.csproj" />
+    <ProjectReference Include="..\Service.Liquidity.Bot.Domain\Service.Liquidity.Bot.Domain.csproj" />
     <ProjectReference Include="..\Service.Liquidity.Bot.Grpc\Service.Liquidity.Bot.Grpc.csproj" />
   </ItemGroup>
 
@@ -37,10 +39,6 @@
     <None Update="Dockerfile">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services" />
   </ItemGroup>
 
 </Project>

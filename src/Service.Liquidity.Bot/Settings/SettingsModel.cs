@@ -23,6 +23,9 @@ namespace Service.Liquidity.Bot.Settings
         [YamlProperty("LiquidityBot.ChatId")]
         public string ChatId { get; set; }
         
+        [YamlProperty("LiquidityBot.MyNoSqlWriterUrl")]
+        public string MyNoSqlWriterUrl { get; set; }
+        
         // [YamlProperty("LiquidityBot.PortfolioStatusTimeoutInMin")]
         // public int PortfolioStatusTimeoutInMin { get; set; }
         //
