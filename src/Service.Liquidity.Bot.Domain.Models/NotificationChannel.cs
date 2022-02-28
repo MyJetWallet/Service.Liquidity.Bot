@@ -1,9 +1,12 @@
-﻿namespace Service.Liquidity.Bot.Domain.Models
+﻿using System.Runtime.Serialization;
+
+namespace Service.Liquidity.Bot.Domain.Models
 {
+    [DataContract]
     public class NotificationChannel
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string ChatId { get; set; }
+        [DataMember(Order = 1)] public string Id { get; set; }
+        [DataMember(Order = 2)] public string Name { get; set; }
+        [DataMember(Order = 3)] public string ChatId { get; set; }
     }
 }
