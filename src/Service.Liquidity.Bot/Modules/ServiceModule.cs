@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Service.Liquidity.Bot.Domain;
 using Service.Liquidity.Bot.NoSql;
 using Service.Liquidity.Bot.Subscribers;
 using Telegram.Bot;
@@ -17,10 +18,9 @@ namespace Service.Liquidity.Bot.Modules
                 .SingleInstance()
                 .AutoActivate();
             builder.RegisterType<NotificationChannelsNoSqlRepository>()
-                .As<NotificationChannelsNoSqlRepository>()
+                .As<INotificationChannelsRepository>()
                 .SingleInstance()
                 .AutoActivate();
-
         }
     }
 }
