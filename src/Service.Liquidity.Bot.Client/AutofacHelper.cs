@@ -12,7 +12,7 @@ namespace Service.Liquidity.Bot.Client
             var factory = new LiquidityBotClientFactory(grpcServiceUrl);
         }
 
-        public static void RegisterNotificationChannelsClient(this ContainerBuilder builder, string grpcServiceUrl)
+        public static void RegisterLiquidityNotificationChannelsClient(this ContainerBuilder builder, string grpcServiceUrl)
         {
             var factory = new LiquidityBotClientFactory(grpcServiceUrl);
             builder.RegisterInstance(factory.GetNotificationChannelsService()).As<INotificationChannelsService>()
