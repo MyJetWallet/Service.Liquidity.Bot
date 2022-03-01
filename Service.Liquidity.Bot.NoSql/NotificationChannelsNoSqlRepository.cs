@@ -1,44 +1,48 @@
-﻿using MyNoSqlServer.Abstractions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using MyNoSqlServer.Abstractions;
 using Service.Liquidity.Bot.Domain;
 using Service.Liquidity.Bot.Domain.Models;
 
-namespace Service.Liquidity.Bot.NoSql;
-
-public class NotificationChannelsNoSqlRepository : INotificationChannelsRepository
+namespace Service.Liquidity.Bot.NoSql
 {
-    private readonly IMyNoSqlServerDataWriter<NotificationChannelNoSql> _myNoSqlServerDataWriter;
-
-    public NotificationChannelsNoSqlRepository(
-        IMyNoSqlServerDataWriter<NotificationChannelNoSql> myNoSqlServerDataWriter
-    )
+    public class NotificationChannelsNoSqlRepository : INotificationChannelsRepository
     {
-        _myNoSqlServerDataWriter = myNoSqlServerDataWriter;
-    }
+        private readonly IMyNoSqlServerDataWriter<NotificationChannelNoSql> _myNoSqlServerDataWriter;
 
-    public async Task AddOrUpdateAsync(NotificationChannel model)
-    {
-        var nosqlModel = NotificationChannelNoSql.Create(model);
-        await _myNoSqlServerDataWriter.InsertOrReplaceAsync(nosqlModel);
-    }
+        public NotificationChannelsNoSqlRepository(
+            IMyNoSqlServerDataWriter<NotificationChannelNoSql> myNoSqlServerDataWriter
+        )
+        {
+            _myNoSqlServerDataWriter = myNoSqlServerDataWriter;
+        }
 
-    public async Task<IEnumerable<NotificationChannel>> GetAsync()
-    {
-        var models = await _myNoSqlServerDataWriter.GetAsync();
+        public async Task AddOrUpdateAsync(NotificationChannel model)
+        {
+            var nosqlModel = NotificationChannelNoSql.Create(model);
+            await _myNoSqlServerDataWriter.InsertOrReplaceAsync(nosqlModel);
+        }
 
-        return models.Select(m => m.Value);
-    }
+        public async Task<IEnumerable<NotificationChannel>> GetAsync()
+        {
+            var models = await _myNoSqlServerDataWriter.GetAsync();
 
-    public async Task<NotificationChannel> GetAsync(string id)
-    {
-        var model = await _myNoSqlServerDataWriter.GetAsync(NotificationChannelNoSql.GeneratePartitionKey(),
-            NotificationChannelNoSql.GenerateRowKey(id));
+            return models.Select(m => m.Value);
+        }
 
-        return model.Value;
-    }
+        public async Task<NotificationChannel> GetAsync(string id)
+        {
+            var model = await _myNoSqlServerDataWriter.GetAsync(NotificationChannelNoSql.GeneratePartitionKey(),
+                NotificationChannelNoSql.GenerateRowKey(id));
 
-    public async Task DeleteAsync(string id)
-    {
-        await _myNoSqlServerDataWriter.DeleteAsync(NotificationChannelNoSql.GeneratePartitionKey(),
-            NotificationChannelNoSql.GenerateRowKey(id));
+            return model?.Value;
+        }
+
+        public async Task DeleteAsync(string id)
+        {
+            await _myNoSqlServerDataWriter.DeleteAsync(NotificationChannelNoSql.GeneratePartitionKey(),
+                NotificationChannelNoSql.GenerateRowKey(id));
+        }
     }
 }

@@ -9,13 +9,13 @@ using Telegram.Bot.Types.Enums;
 
 namespace Service.Liquidity.Bot.Subscribers
 {
-    public class LiquidityMessageSubscriber
+    public class AssetPortfolioStatusSubscriber
     {
-        private readonly ILogger<LiquidityMessageSubscriber> _logger;
+        private readonly ILogger<AssetPortfolioStatusSubscriber> _logger;
         private readonly ITelegramBotClient _botApiClient;
 
-        public LiquidityMessageSubscriber(
-            ILogger<LiquidityMessageSubscriber> logger,
+        public AssetPortfolioStatusSubscriber(
+            ILogger<AssetPortfolioStatusSubscriber> logger,
             ISubscriber<AssetPortfolioStatusMessage> subscriber, 
             ITelegramBotClient botApiClient)
         {

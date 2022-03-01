@@ -1,23 +1,25 @@
-﻿using MyNoSqlServer.Abstractions;
+﻿using System;
+using MyNoSqlServer.Abstractions;
 using Service.Liquidity.Bot.Domain.Models;
 
-namespace Service.Liquidity.Bot.NoSql;
-
-public class NotificationChannelNoSql : MyNoSqlDbEntity
+namespace Service.Liquidity.Bot.NoSql
 {
-    public const string TableName = "myjetwallet-liquidity-bot-notification-channels";
-    public static string GeneratePartitionKey() => "*";
-    public static string GenerateRowKey(string id) => id;
-    
-    public NotificationChannel Value { get; set; }
-    
-    public static NotificationChannelNoSql Create(NotificationChannel src)
+    public class NotificationChannelNoSql : MyNoSqlDbEntity
     {
-        return new NotificationChannelNoSql
+        public const string TableName = "myjetwallet-liquidity-bot-notification-channels";
+        public static string GeneratePartitionKey() => "*";
+        public static string GenerateRowKey(string id) => id;
+
+        public NotificationChannel Value { get; set; }
+
+        public static NotificationChannelNoSql Create(NotificationChannel src)
         {
-            PartitionKey = GeneratePartitionKey(),
-            RowKey = GenerateRowKey(src.Id ?? Guid.NewGuid().ToString()),
-            Value = src
-        };
+            return new NotificationChannelNoSql
+            {
+                PartitionKey = GeneratePartitionKey(),
+                RowKey = GenerateRowKey(src.Id ?? Guid.NewGuid().ToString()),
+                Value = src
+            };
+        }
     }
 }

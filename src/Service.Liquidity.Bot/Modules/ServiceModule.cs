@@ -14,7 +14,10 @@ namespace Service.Liquidity.Bot.Modules
                 .RegisterInstance(new TelegramBotClient(Program.Settings.BotApiKey))
                 .As<ITelegramBotClient>()
                 .SingleInstance();
-            builder.RegisterType<LiquidityMessageSubscriber>()
+            builder.RegisterType<AssetPortfolioStatusSubscriber>()
+                .SingleInstance()
+                .AutoActivate();
+            builder.RegisterType<SendNotificationCommandSubscriber>()
                 .SingleInstance()
                 .AutoActivate();
             builder.RegisterType<NotificationChannelsNoSqlRepository>()
