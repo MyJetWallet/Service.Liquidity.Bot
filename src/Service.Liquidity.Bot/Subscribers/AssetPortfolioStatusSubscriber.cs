@@ -26,8 +26,6 @@ namespace Service.Liquidity.Bot.Subscribers
 
         private async ValueTask Consume(AssetPortfolioStatusMessage message)
         {
-            _logger.LogInformation("Consuming message {@context}", message);
-            
             try
             {
                 var uniMessage = message.Message;
@@ -40,7 +38,6 @@ namespace Service.Liquidity.Bot.Subscribers
             {
                 _logger.LogInformation(e, "Error during consumptions {@context}", message);
             }
-            _logger.LogInformation("Has been consumed {@context}", message);            
         }
     }
 }
