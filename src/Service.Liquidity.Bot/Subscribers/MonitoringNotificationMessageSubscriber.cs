@@ -42,7 +42,7 @@ namespace Service.Liquidity.Bot.Subscribers
                     return;
                 }
 
-                await _botApiClient.SendTextMessageAsync(message.ChannelId,
+                await _botApiClient.SendTextMessageAsync(channel.ChatId,
                     message.Text, ParseMode.Html);
             }
             catch (Exception e)
