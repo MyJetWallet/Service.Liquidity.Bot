@@ -29,8 +29,8 @@ namespace Service.Liquidity.Bot.Modules
                 AssetPortfolioStatusMessage.TopicName, 
                 queueName, 
                 TopicQueueType.PermanentWithSingleConnection);
-            builder.RegisterMyServiceBusSubscriberSingle<SendNotificationCommand>(serviceBusClient, 
-                SendNotificationCommand.SbTopicName, 
+            builder.RegisterMyServiceBusSubscriberSingle<MonitoringNotificationMessage>(serviceBusClient, 
+                MonitoringNotificationMessage.SbTopicName, 
                 queueName, 
                 TopicQueueType.DeleteOnDisconnect);
         }

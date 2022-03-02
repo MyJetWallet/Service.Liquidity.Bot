@@ -17,7 +17,7 @@ namespace Service.Liquidity.Bot.Modules
             builder.RegisterType<AssetPortfolioStatusSubscriber>()
                 .SingleInstance()
                 .AutoActivate();
-            builder.RegisterType<SendNotificationCommandSubscriber>()
+            builder.RegisterType<MonitoringNotificationMessageSubscriber>()
                 .SingleInstance()
                 .AutoActivate();
             builder.RegisterType<NotificationChannelsNoSqlRepository>()
