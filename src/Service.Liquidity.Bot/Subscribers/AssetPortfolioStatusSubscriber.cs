@@ -28,10 +28,9 @@ namespace Service.Liquidity.Bot.Subscribers
         {
             try
             {
-                var uniMessage = message.Message;
-                _logger.LogInformation("Ready to send message {message}", uniMessage);
                 var result = await _botApiClient.SendTextMessageAsync(Program.Settings.ChatId, 
-                    uniMessage, ParseMode.Html);
+                    message.Message, ParseMode.Html);
+                
                 _logger.LogInformation("Message was sent with id {id}", result.MessageId);
             }
             catch (Exception e)
