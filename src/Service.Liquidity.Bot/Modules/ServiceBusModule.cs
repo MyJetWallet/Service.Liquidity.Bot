@@ -32,7 +32,7 @@ namespace Service.Liquidity.Bot.Modules
             builder.RegisterMyServiceBusSubscriberSingle<MonitoringNotificationMessage>(serviceBusClient, 
                 MonitoringNotificationMessage.SbTopicName, 
                 queueName, 
-                TopicQueueType.DeleteOnDisconnect);
+                TopicQueueType.PermanentWithSingleConnection);
         }
     }
 }
