@@ -22,5 +22,7 @@ namespace Service.Liquidity.Bot.Client
         }
         
         public INotificationChannelsService GetNotificationChannelsService() => CreateGrpcService<INotificationChannelsService>();
+        public INotificationsService GetNotificationsService() => CreateGrpcService<INotificationsService>();
+
     }
 }
