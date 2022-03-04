@@ -44,6 +44,7 @@ namespace Service.Liquidity.Bot
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcSchema<NotificationChannelsService, INotificationChannelsService>();
+                endpoints.MapGrpcSchema<NotificationsService, INotificationsService>();
 
                 endpoints.MapGrpcSchemaRegistry();
 
