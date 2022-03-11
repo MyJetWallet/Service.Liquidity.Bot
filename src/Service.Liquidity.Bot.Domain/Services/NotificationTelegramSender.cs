@@ -24,8 +24,15 @@ public class NotificationTelegramSender : INotificationSender
 
     public async Task SendAsync(string channelId, string text)
     {
-        var channel = await _notificationChannelsRepository.GetAsync(channelId);
+        try
+        {
+            var channel = await _notificationChannelsRepository.GetAsync(channelId);
 
-        await _telegramBotClient.SendTextMessageAsync(channel.ChatId, text, ParseMode.Html);
+            await _telegramBotClient.SendTextMessageAsync(channel.ChatId, text, ParseMode.Html);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Failed to send notification to telegram {channelId} {text}");
+        }
     }
 }

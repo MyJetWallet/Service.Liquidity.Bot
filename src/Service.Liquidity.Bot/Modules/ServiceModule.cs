@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.Extensions.Caching.Memory;
 using Service.Liquidity.Bot.Domain;
 using Service.Liquidity.Bot.Domain.Interfaces;
 using Service.Liquidity.Bot.Domain.Services;
@@ -19,7 +20,7 @@ namespace Service.Liquidity.Bot.Modules
             builder.RegisterType<AssetPortfolioStatusSubscriber>()
                 .SingleInstance()
                 .AutoActivate();
-            builder.RegisterType<MonitoringNotificationMessageSubscriber>()
+            builder.RegisterType<PortfolioMonitoringMessageSubscriber>()
                 .As<IStartable>()
                 .SingleInstance()
                 .AutoActivate();
@@ -31,6 +32,9 @@ namespace Service.Liquidity.Bot.Modules
                 .As<INotificationSender>()
                 .SingleInstance()
                 .AutoActivate();
-        }
+            builder.RegisterType<MemoryCache>()
+                .As<IMemoryCache>()
+                .SingleInstance()
+                .AutoActivate();        }
     }
 }

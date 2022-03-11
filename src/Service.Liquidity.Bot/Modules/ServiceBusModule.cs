@@ -17,10 +17,10 @@ namespace Service.Liquidity.Bot.Modules
                 AssetPortfolioStatusMessage.TopicName, 
                 queueName, 
                 TopicQueueType.PermanentWithSingleConnection);
-            builder.RegisterMyServiceBusSubscriberSingle<MonitoringNotificationMessage>(serviceBusClient, 
-                MonitoringNotificationMessage.SbTopicName, 
+            builder.RegisterMyServiceBusSubscriberSingle<PortfolioMonitoringMessage>(serviceBusClient, 
+                PortfolioMonitoringMessage.TopicName, 
                 queueName, 
-                TopicQueueType.PermanentWithSingleConnection);
+                TopicQueueType.DeleteOnDisconnect);
         }
     }
 }
