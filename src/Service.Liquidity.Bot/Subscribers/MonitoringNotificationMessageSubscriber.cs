@@ -1,48 +1,40 @@
 using System;
 using System.Threading.Tasks;
+using Autofac;
 using DotNetCoreDecorators;
 using Microsoft.Extensions.Logging;
 using Service.Liquidity.Bot.Domain;
 using Service.Liquidity.Monitoring.Domain.Models.RuleSets;
-using Telegram.Bot;
-using Telegram.Bot.Types.Enums;
 
 namespace Service.Liquidity.Bot.Subscribers
 {
-    public class MonitoringNotificationMessageSubscriber
+    public class MonitoringNotificationMessageSubscriber : IStartable
     {
+        private ISubscriber<MonitoringNotificationMessage> _subscriber;
         private readonly ILogger<MonitoringNotificationMessageSubscriber> _logger;
-        private readonly ITelegramBotClient _botApiClient;
-        private readonly INotificationChannelsRepository _channelsRepository;
+        private readonly INotificationSender _notificationSender;
 
         public MonitoringNotificationMessageSubscriber(
             ILogger<MonitoringNotificationMessageSubscriber> logger,
             ISubscriber<MonitoringNotificationMessage> subscriber,
-            ITelegramBotClient botApiClient,
-            INotificationChannelsRepository channelsRepository
+            INotificationSender notificationSender
         )
         {
+            _subscriber = subscriber;
             _logger = logger;
-            subscriber.Subscribe(Consume);
-            _botApiClient = botApiClient;
-            _channelsRepository = channelsRepository;
+            _notificationSender = notificationSender;
         }
 
-        private async ValueTask Consume(MonitoringNotificationMessage message)
+        public void Start()
+        {
+            _subscriber.Subscribe(Handle);
+        }
+
+        private async ValueTask Handle(MonitoringNotificationMessage message)
         {
             try
             {
-                var channel = await _channelsRepository.GetAsync(message.ChannelId);
-
-                if (channel == null)
-                {
-                    _logger.LogWarning("Can't send notification, channel with id {channelId} not found",
-                        message.ChannelId);
-                    return;
-                }
-
-                await _botApiClient.SendTextMessageAsync(channel.ChatId,
-                    message.Text, ParseMode.Html);
+                await _notificationSender.SendAsync(message.ChannelId, message.Text);
             }
             catch (Exception e)
             {

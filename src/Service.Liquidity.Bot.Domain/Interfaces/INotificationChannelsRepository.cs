@@ -1,6 +1,6 @@
 ﻿using Service.Liquidity.Bot.Domain.Models;
 
-namespace Service.Liquidity.Bot.Domain;
+namespace Service.Liquidity.Bot.Domain.Interfaces;
 
 public interface INotificationChannelsRepository
 {
