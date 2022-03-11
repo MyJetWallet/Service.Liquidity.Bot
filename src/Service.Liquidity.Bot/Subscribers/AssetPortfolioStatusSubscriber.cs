@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using DotNetCoreDecorators;
 using Microsoft.Extensions.Logging;
-using MyJetWallet.Sdk.Service;
 using Service.Liquidity.Monitoring.Domain.Models;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;

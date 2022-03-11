@@ -32,7 +32,6 @@ namespace Service.Liquidity.Bot.Services
             {
                 var channel = await _notificationChannelsRepository.GetAsync(request.ChannelId);
 
-                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if (channel == null)
                 {
                     _logger.LogWarning("Can't send notification, channel with id {channelId} not found",
