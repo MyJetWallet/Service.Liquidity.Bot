@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Service.Liquidity.Bot.Domain;
 using Service.Liquidity.Bot.Domain.Models;
 using Service.Liquidity.Monitoring.Domain.Models;
+using Service.Liquidity.Monitoring.Domain.Models.RuleSets;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 

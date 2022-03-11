@@ -4,6 +4,7 @@ using MyServiceBus.Abstractions;
 using Service.Liquidity.Bot.Domain.Models;
 using Service.Liquidity.Bot.Subscribers;
 using Service.Liquidity.Monitoring.Domain.Models;
+using Service.Liquidity.Monitoring.Domain.Models.RuleSets;
 using Service.Liquidity.Portfolio.Domain.Models;
 
 namespace Service.Liquidity.Bot.Modules
