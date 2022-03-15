@@ -65,7 +65,7 @@ namespace Service.Liquidity.Bot.Subscribers
 
         private string GetCacheKey(MonitoringRule rule)
         {
-            return rule.Name;
+            return rule.Id;
         }
     }
 }
