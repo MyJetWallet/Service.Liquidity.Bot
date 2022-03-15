@@ -15,7 +15,8 @@ public static class PortfolioChecksExtensions
             : $"{inactiveSymbol} Check <b>{check.Name}</b> is inactive";
 
         return $"{title}{Environment.NewLine}" +
-               $"{check.MetricType.Humanize()} value: <b>{check.CurrentState.MetricValue}</b>{Environment.NewLine}" +
+               $"{check.MetricType.Humanize()} is {check.OperatorType.Humanize()} {check.TargetValue}" +
+               $"Metric value: <b>{check.CurrentState.MetricValue}</b>{Environment.NewLine}" +
                $"Target value: <b>{check.TargetValue}</b>";
     }
 
