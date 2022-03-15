@@ -19,7 +19,7 @@ public static class MonitoringRuleExtensions
 
         var timeToRemind = DateTime.UtcNow - lastNotificationDate > TimeSpan.FromMinutes(60);
 
-        if (lastNotificationDate == null || timeToRemind)
+        if (rule.CurrentState.IsActive && (lastNotificationDate == null || timeToRemind))
         {
             return true;
         }
