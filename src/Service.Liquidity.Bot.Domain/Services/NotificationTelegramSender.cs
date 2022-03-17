@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Service.Liquidity.Bot.Domain.Interfaces;
+using Service.Liquidity.Bot.Domain.Models;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 
@@ -24,15 +25,22 @@ public class NotificationTelegramSender : INotificationSender
 
     public async Task SendAsync(string channelId, string text)
     {
+        NotificationChannel? channel = null;
+        
         try
         {
-            var channel = await _notificationChannelsRepository.GetAsync(channelId);
+            channel = await _notificationChannelsRepository.GetAsync(channelId);
+
+            if (channel == null)
+            {
+                throw new Exception($"Failed to SendNotification. Channel with id {channelId} not found");
+            }
 
             await _telegramBotClient.SendTextMessageAsync(channel.ChatId, text, ParseMode.Html);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Failed to send notification to telegram {channelId} {text}");
+            _logger.LogError(ex, $"Failed to SendNotification to {channel?.Name} {text}");
         }
     }
 }
