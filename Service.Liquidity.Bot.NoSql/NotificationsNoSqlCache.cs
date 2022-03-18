@@ -21,7 +21,7 @@ public class NotificationsNoSqlCache : INotificationsCache
     {
         var nosqlModel = NotificationNoSql.Create(ruleId, expires);
         await _myNoSqlServerDataWriter.InsertOrReplaceAsync(nosqlModel);
-        await _myNoSqlServerDataWriter.CleanAndKeepMaxRecords(NotificationNoSql.GeneratePartitionKey(), 1000);
+        await _myNoSqlServerDataWriter.CleanAndKeepMaxRecords(NotificationNoSql.GeneratePartitionKey(), 3500);
     }
 
     public async Task<DateTime> GetLastNotificationDateAsync(string ruleId)
