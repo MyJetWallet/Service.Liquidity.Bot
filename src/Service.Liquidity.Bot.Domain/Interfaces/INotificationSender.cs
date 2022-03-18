@@ -1,4 +1,4 @@
-﻿namespace Service.Liquidity.Bot.Domain;
+﻿namespace Service.Liquidity.Bot.Domain.Interfaces;
 
 public interface INotificationSender
 {
