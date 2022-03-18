@@ -13,28 +13,17 @@ namespace Service.Liquidity.Bot.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder
-                .RegisterInstance(new TelegramBotClient(Program.Settings.BotApiKey))
-                .As<ITelegramBotClient>()
+            builder.RegisterInstance(new TelegramBotClient(Program.Settings.BotApiKey)).As<ITelegramBotClient>()
                 .SingleInstance();
-            builder.RegisterType<AssetPortfolioStatusSubscriber>()
-                .SingleInstance()
-                .AutoActivate();
-            builder.RegisterType<PortfolioMonitoringMessageSubscriber>()
-                .As<IStartable>()
-                .SingleInstance()
-                .AutoActivate();
-            builder.RegisterType<NotificationChannelsNoSqlRepository>()
-                .As<INotificationChannelsRepository>()
-                .SingleInstance()
-                .AutoActivate();
-            builder.RegisterType<NotificationTelegramSender>()
-                .As<INotificationSender>()
-                .SingleInstance()
-                .AutoActivate();
-            builder.RegisterType<MemoryCache>()
-                .As<IMemoryCache>()
-                .SingleInstance()
-                .AutoActivate();        }
+            builder.RegisterType<AssetPortfolioStatusSubscriber>().SingleInstance().AutoActivate();
+            builder.RegisterType<PortfolioMonitoringMessageSubscriber>().As<IStartable>()
+                .SingleInstance().AutoActivate();
+            builder.RegisterType<NotificationChannelsNoSqlRepository>().As<INotificationChannelsRepository>()
+                .SingleInstance().AutoActivate();
+            builder.RegisterType<NotificationTelegramSender>().As<INotificationSender>()
+                .SingleInstance().AutoActivate();
+            builder.RegisterType<NotificationsNoSqlCache>().As<INotificationsCache>()
+                .SingleInstance().AutoActivate();
+        }
     }
 }

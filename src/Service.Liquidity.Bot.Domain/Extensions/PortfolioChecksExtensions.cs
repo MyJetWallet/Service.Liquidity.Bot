@@ -16,8 +16,7 @@ public static class PortfolioChecksExtensions
 
         return $"{title}{Environment.NewLine}" +
                $"{check.MetricType.Humanize()} {check.OperatorType.Humanize()} {check.TargetValue}{Environment.NewLine}" +
-               $"Metric value: <b>{check.CurrentState.MetricValue}</b>{Environment.NewLine}" +
-               $"Target value: <b>{check.TargetValue}</b>";
+               $"Metric value: <b>{check.CurrentState.MetricValue}</b>";
     }
 
     public static string GetOrGenerateDescription(this PortfolioCheck check)
