@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using DotNetCoreDecorators;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Service.Liquidity.Bot.Domain;
 using Service.Liquidity.Bot.Domain.Extensions;
 using Service.Liquidity.Bot.Domain.Interfaces;
+using Service.Liquidity.Bot.Domain.Models;
 using Service.Liquidity.Monitoring.Domain.Models;
-using Service.Liquidity.Monitoring.Domain.Models.Checks;
 using Service.Liquidity.Monitoring.Domain.Models.RuleSets;
 
 namespace Service.Liquidity.Bot.Subscribers
@@ -55,6 +54,21 @@ namespace Service.Liquidity.Bot.Subscribers
                                 rule.GetNotificationText(message.Checks));
                             await _notificationsCache.AddOrUpdateAsync(rule.Id, DateTime.UtcNow.AddHours(1));
                         }
+                    }
+                }
+
+                foreach (var rule in message.Rules?
+                             .Where(r => r.Category == MonitoringRuleConsts.Category) ?? new List<MonitoringRule>())
+                {
+                    var lastNotificationDate = await _notificationsCache.GetLastNotificationDateAsync(rule.Id);
+
+                    if (rule.NeedsNotification(lastNotificationDate))
+                    {
+                        var channelId = rule.ParamsByName?.Values
+                            .FirstOrDefault(p => p.Name == MonitoringRuleConsts.ChannelIdParam)?
+                            .GetString();
+                        await _notificationSender.SendAsync(channelId!, rule.GetNotificationText());
+                        await _notificationsCache.AddOrUpdateAsync(rule.Id, DateTime.UtcNow.AddHours(1));
                     }
                 }
             }

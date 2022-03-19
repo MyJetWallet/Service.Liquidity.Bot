@@ -1,4 +1,5 @@
-﻿using Service.Liquidity.Monitoring.Domain.Models.Checks;
+﻿using Service.Liquidity.Bot.Domain.Models;
+using Service.Liquidity.Monitoring.Domain.Models.Checks;
 using Service.Liquidity.Monitoring.Domain.Models.RuleSets;
 
 namespace Service.Liquidity.Bot.Domain.Extensions;
@@ -7,7 +8,10 @@ public static class MonitoringRuleExtensions
 {
     public static bool NeedsNotification(this MonitoringRule rule, DateTime? lastNotificationDate)
     {
-        if (string.IsNullOrWhiteSpace(rule.NotificationChannelId))
+        var channelId = rule.ParamsByName?.Values
+            .FirstOrDefault(p => p.Name == MonitoringRuleConsts.ChannelIdParam)?
+            .GetString();
+        if (string.IsNullOrWhiteSpace(rule.NotificationChannelId) && string.IsNullOrWhiteSpace(channelId))
         {
             return false;
         }
@@ -27,12 +31,12 @@ public static class MonitoringRuleExtensions
         return false;
     }
 
-    public static string GetNotificationText(this MonitoringRule rule, IEnumerable<PortfolioCheck> checks)
+    public static string GetNotificationText(this MonitoringRule rule, IEnumerable<PortfolioCheck>? checks = null)
     {
         var checkIds = rule.CheckIds.ToHashSet();
-        var ruleChecks = checks
+        var ruleChecks = checks?
             .Where(ch => checkIds.Contains(ch.Id))
-            .ToList();
+            .ToList() ?? rule.Checks;
         var title =
             $"Rule <b>{rule.Name}</b> is {(rule.CurrentState.IsActive ? "active" : "inactive")}:{Environment.NewLine}{rule.Description}";
         var checkDescriptions = ruleChecks.Select(ch => ch.GetOrGenerateDescription());
