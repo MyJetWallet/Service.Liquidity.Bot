@@ -33,10 +33,11 @@ public static class MonitoringRuleExtensions
 
     public static string GetNotificationText(this MonitoringRule rule, IEnumerable<PortfolioCheck>? checks = null)
     {
-        var checkIds = rule.CheckIds.ToHashSet();
-        var ruleChecks = checks?
-            .Where(ch => checkIds.Contains(ch.Id))
-            .ToList() ?? rule.Checks;
+        var checkIds = rule.CheckIds?.ToHashSet() ?? new HashSet<string>();
+        var ruleChecks = checkIds.Any()
+            ? checks?.Where(ch => checkIds.Contains(ch.Id))
+                .ToList() ?? new List<PortfolioCheck>()
+            : rule.Checks ?? new List<PortfolioCheck>();
         var title =
             $"Rule <b>{rule.Name}</b> is {(rule.CurrentState.IsActive ? "active" : "inactive")}:{Environment.NewLine}{rule.Description}";
         var checkDescriptions = ruleChecks.Select(ch => ch.GetOrGenerateDescription());
