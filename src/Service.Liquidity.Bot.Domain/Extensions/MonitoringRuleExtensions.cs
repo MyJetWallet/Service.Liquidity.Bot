@@ -1,6 +1,7 @@
 ﻿using Service.Liquidity.Bot.Domain.Models;
 using Service.Liquidity.Monitoring.Domain.Models.Checks;
 using Service.Liquidity.Monitoring.Domain.Models.RuleSets;
+using Service.Liquidity.Monitoring.Domain.Models.RuleSets.Actions;
 
 namespace Service.Liquidity.Bot.Domain.Extensions;
 

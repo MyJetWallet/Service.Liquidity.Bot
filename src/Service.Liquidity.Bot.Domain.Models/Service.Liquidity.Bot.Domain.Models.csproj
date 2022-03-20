@@ -5,4 +5,8 @@
     <LangVersion>default</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MyJetWallet.Service.Liquidity.Monitoring.Client" Version="2.2.13" />
+  </ItemGroup>
+
 </Project>
