@@ -37,7 +37,9 @@ namespace Service.Liquidity.Bot.Subscribers
             {
                 await _notificationSender.SendAsync(
                     $"Made hedge operation:" +
-                    $"{Environment.NewLine}Traded volume={operation.HedgeTrades?.Sum(t => t.BaseVolume) ?? 0}; Target value={operation.TargetVolume}" +
+                    $"{Environment.NewLine}Asset={operation.HedgeTrades?.FirstOrDefault()?.BaseAsset} " +
+                    $"Traded volume={operation.HedgeTrades?.Sum(t => t.BaseVolume) ?? 0}; " +
+                    $"Target value={operation.TargetVolume}" +
                     $"{Environment.NewLine}Date: {operation.CreatedDate:yyyy-MM-dd hh:mm:ss}");
             }
             catch (Exception ex)
