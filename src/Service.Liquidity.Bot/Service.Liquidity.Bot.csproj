@@ -3,8 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>4a6c0a88-9036-4ca5-aade-d1bc53bc8f80</UserSecretsId>
-    <Nullable>disable</Nullable>
-    <LangVersion>8</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +18,7 @@
     <PackageReference Include="MyJetWallet.Sdk.NoSql" Version="2.1.2" />
     <PackageReference Include="MyJetWallet.Sdk.Service" Version="2.1.7" />
     <PackageReference Include="MyJetWallet.Sdk.ServiceBus" Version="2.2.2" />
+    <PackageReference Include="MyJetWallet.Service.Liquidity.Hedger.Client" Version="1.0.8" />
     <PackageReference Include="MyJetWallet.Service.Liquidity.Monitoring.Client" Version="2.2.14" />
     <PackageReference Include="MyJetWallet.Service.Liquidity.TradingPortfolio.Client" Version="1.8.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
