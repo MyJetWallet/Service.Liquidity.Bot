@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using MyNoSqlServer.Abstractions;
-using Service.Liquidity.Bot.Domain;
 using Service.Liquidity.Bot.Domain.Interfaces;
 using Service.Liquidity.Bot.Domain.Models;
 

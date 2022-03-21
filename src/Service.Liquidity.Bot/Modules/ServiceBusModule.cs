@@ -2,7 +2,6 @@ using Autofac;
 using MyJetWallet.Sdk.ServiceBus;
 using MyServiceBus.Abstractions;
 using Service.Liquidity.Monitoring.Domain.Models;
-using Service.Liquidity.Monitoring.Domain.Models.RuleSets;
 
 namespace Service.Liquidity.Bot.Modules
 {

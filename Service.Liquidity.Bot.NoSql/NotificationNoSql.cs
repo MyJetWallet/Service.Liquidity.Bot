@@ -1,6 +1,5 @@
 using System;
 using MyNoSqlServer.Abstractions;
-using Service.Liquidity.Monitoring.Domain.Models.RuleSets;
 
 namespace Service.Liquidity.Bot.NoSql;
 

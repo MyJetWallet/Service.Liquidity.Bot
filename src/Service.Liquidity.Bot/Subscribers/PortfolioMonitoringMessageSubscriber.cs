@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using DotNetCoreDecorators;
@@ -9,7 +8,7 @@ using Service.Liquidity.Bot.Domain.Extensions;
 using Service.Liquidity.Bot.Domain.Interfaces;
 using Service.Liquidity.Bot.Domain.Models;
 using Service.Liquidity.Monitoring.Domain.Models;
-using Service.Liquidity.Monitoring.Domain.Models.RuleSets;
+using Service.Liquidity.Monitoring.Domain.Models.Rules;
 
 namespace Service.Liquidity.Bot.Subscribers
 {

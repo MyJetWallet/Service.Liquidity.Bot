@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Service.Liquidity.Monitoring.Domain.Models.RuleSets.Actions;
+using Service.Liquidity.Monitoring.Domain.Models.Actions;
 
 namespace Service.Liquidity.Bot.Domain.Models
 {

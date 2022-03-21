@@ -1,7 +1,6 @@
 ﻿using Service.Liquidity.Bot.Domain.Models;
 using Service.Liquidity.Monitoring.Domain.Models.Checks;
-using Service.Liquidity.Monitoring.Domain.Models.RuleSets;
-using Service.Liquidity.Monitoring.Domain.Models.RuleSets.Actions;
+using Service.Liquidity.Monitoring.Domain.Models.Rules;
 
 namespace Service.Liquidity.Bot.Domain.Extensions;
 
@@ -33,13 +32,9 @@ public static class MonitoringRuleExtensions
         return false;
     }
 
-    public static string GetNotificationText(this MonitoringRule rule, IEnumerable<PortfolioCheck>? checks = null)
+    public static string GetNotificationText(this MonitoringRule rule)
     {
-        var checkIds = rule.CheckIds?.ToHashSet() ?? new HashSet<string>();
-        var ruleChecks = checkIds.Any()
-            ? checks?.Where(ch => checkIds.Contains(ch.Id))
-                .ToList() ?? new List<PortfolioCheck>()
-            : rule.Checks ?? new List<PortfolioCheck>();
+        var ruleChecks = rule.Checks ?? new List<PortfolioCheck>();
         var title =
             $"Rule <b>{rule.Name}</b> is {(rule.CurrentState.IsActive ? "active" : "inactive")}:{Environment.NewLine}{rule.Description}";
         var checkDescriptions = ruleChecks.Select(ch => ch.GetOrGenerateDescription());

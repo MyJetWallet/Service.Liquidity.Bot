@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using MyNoSqlServer.Abstractions;
 using Service.Liquidity.Bot.Domain.Interfaces;
-using Service.Liquidity.Monitoring.Domain.Models.RuleSets;
 
 namespace Service.Liquidity.Bot.NoSql;
 

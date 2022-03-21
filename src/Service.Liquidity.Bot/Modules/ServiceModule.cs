@@ -1,6 +1,4 @@
 ﻿using Autofac;
-using Microsoft.Extensions.Caching.Memory;
-using Service.Liquidity.Bot.Domain;
 using Service.Liquidity.Bot.Domain.Interfaces;
 using Service.Liquidity.Bot.Domain.Services;
 using Service.Liquidity.Bot.NoSql;
