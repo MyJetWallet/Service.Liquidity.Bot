@@ -9,10 +9,11 @@ public static class MonitoringRuleExtensions
 {
     public static bool NeedsNotification(this MonitoringRule rule, DateTime? lastNotificationDate)
     {
-        var channelId = rule.ParamsByName?.Values
-            .FirstOrDefault(p => p.Name == MonitoringRuleConsts.ChannelIdParam)?
-            .GetString();
-        if (string.IsNullOrWhiteSpace(rule.NotificationChannelId) && string.IsNullOrWhiteSpace(channelId))
+        var action = new SendNotificationMonitoringAction();
+
+        if (rule.ActionsByTypeName == null ||
+            !rule.ActionsByTypeName.TryGetValue(action.TypeName, out var ruleAction) ||
+            string.IsNullOrEmpty(ruleAction.MapTo<SendNotificationMonitoringAction>().NotificationChannelId))
         {
             return false;
         }

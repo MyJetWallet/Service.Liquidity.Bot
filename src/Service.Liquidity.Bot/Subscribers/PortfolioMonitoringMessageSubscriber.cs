@@ -42,31 +42,14 @@ namespace Service.Liquidity.Bot.Subscribers
         {
             try
             {
-                foreach (var ruleSet in message.RuleSets ?? Array.Empty<MonitoringRuleSet>())
-                {
-                    foreach (var rule in ruleSet.Rules ?? Array.Empty<MonitoringRule>())
-                    {
-                        var lastNotificationDate = await _notificationsCache.GetLastNotificationDateAsync(rule.Id);
-
-                        if (rule.NeedsNotification(lastNotificationDate))
-                        {
-                            await _notificationSender.SendAsync(rule.NotificationChannelId,
-                                rule.GetNotificationText(message.Checks));
-                            await _notificationsCache.AddOrUpdateAsync(rule.Id, DateTime.UtcNow.AddHours(1));
-                        }
-                    }
-                }
-
-                foreach (var rule in message.Rules?
-                             .Where(r => r.Category == MonitoringRuleConsts.Category) ?? new List<MonitoringRule>())
+                foreach (var rule in message.Rules ?? new List<MonitoringRule>())
                 {
                     var lastNotificationDate = await _notificationsCache.GetLastNotificationDateAsync(rule.Id);
 
                     if (rule.NeedsNotification(lastNotificationDate))
                     {
-                        var channelId = rule.ParamsByName?.Values
-                            .FirstOrDefault(p => p.Name == MonitoringRuleConsts.ChannelIdParam)?
-                            .GetString();
+                        var channelId = rule.ActionsByTypeName[new SendNotificationMonitoringAction().TypeName]
+                            .MapTo<SendNotificationMonitoringAction>().NotificationChannelId;
                         await _notificationSender.SendAsync(channelId!, rule.GetNotificationText());
                         await _notificationsCache.AddOrUpdateAsync(rule.Id, DateTime.UtcNow.AddHours(1));
                     }
