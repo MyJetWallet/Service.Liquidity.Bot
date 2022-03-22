@@ -10,9 +10,7 @@ public static class MonitoringRuleExtensions
     {
         var action = new SendNotificationMonitoringAction();
 
-        if (rule.ActionsByTypeName == null ||
-            !rule.ActionsByTypeName.TryGetValue(action.TypeName, out var ruleAction) ||
-            string.IsNullOrEmpty(ruleAction.MapTo<SendNotificationMonitoringAction>().NotificationChannelId))
+        if (rule.ActionsByTypeName == null || !rule.ActionsByTypeName.TryGetValue(action.TypeName, out _))
         {
             return false;
         }

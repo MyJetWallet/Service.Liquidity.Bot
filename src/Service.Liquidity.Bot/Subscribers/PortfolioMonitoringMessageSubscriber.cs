@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Service.Liquidity.Bot.Domain.Extensions;
 using Service.Liquidity.Bot.Domain.Interfaces;
 using Service.Liquidity.Bot.Domain.Models;
+using Service.Liquidity.Bot.Settings;
 using Service.Liquidity.Monitoring.Domain.Models;
 using Service.Liquidity.Monitoring.Domain.Models.Rules;
 
@@ -24,7 +25,7 @@ namespace Service.Liquidity.Bot.Subscribers
             ISubscriber<PortfolioMonitoringMessage> subscriber,
             INotificationSender notificationSender,
             INotificationsCache notificationsCache
-        )
+            )
         {
             _subscriber = subscriber;
             _logger = logger;
@@ -47,9 +48,18 @@ namespace Service.Liquidity.Bot.Subscribers
 
                     if (rule.NeedsNotification(lastNotificationDate))
                     {
-                        var channelId = rule.ActionsByTypeName[new SendNotificationMonitoringAction().TypeName]
-                            .MapTo<SendNotificationMonitoringAction>().NotificationChannelId;
-                        await _notificationSender.SendAsync(channelId!, rule.GetNotificationText());
+                        var action = new SendNotificationMonitoringAction();
+                        rule.ActionsByTypeName[action.TypeName].CopyTo(action);
+
+                        if (string.IsNullOrWhiteSpace(action.NotificationChannelId))
+                        {
+                            await _notificationSender.SendAsync(rule.GetNotificationText());
+                        }
+                        else
+                        {
+                            await _notificationSender.SendAsync(action.NotificationChannelId, rule.GetNotificationText());
+                        }
+
                         await _notificationsCache.AddOrUpdateAsync(rule.Id, DateTime.UtcNow.AddHours(1));
                     }
                 }
