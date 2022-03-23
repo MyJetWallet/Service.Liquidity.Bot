@@ -66,8 +66,8 @@ namespace Service.Liquidity.Bot.Subscribers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "{sub} failed {@context}", nameof(PortfolioMonitoringMessageSubscriber),
-                    message);
+                _logger.LogError(e, "Failed to handle {@message}. {@exMessage}", nameof(PortfolioMonitoringMessage),
+                    e.Message);
             }
         }
     }
