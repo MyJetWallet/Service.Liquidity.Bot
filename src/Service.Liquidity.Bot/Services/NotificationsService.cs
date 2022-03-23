@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Service.Liquidity.Bot.Domain.Interfaces;
+using Service.Liquidity.Bot.Domain.Services;
 using Service.Liquidity.Bot.Grpc;
 using Service.Liquidity.Bot.Grpc.Models.Notifications;
 

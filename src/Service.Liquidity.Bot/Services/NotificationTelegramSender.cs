@@ -3,13 +3,14 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Service.Liquidity.Bot.Domain.Interfaces;
 using Service.Liquidity.Bot.Domain.Models;
+using Service.Liquidity.Bot.Domain.Services;
 using Service.Liquidity.Bot.Settings;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 
 namespace Service.Liquidity.Bot.Services
 {
-    public class NotificationTelegramSender : INotificationSender
+    public class NotificationTelegramSender : BaseRetryService<NotificationTelegramSender>, INotificationSender
     {
         private readonly ILogger<NotificationTelegramSender> _logger;
         private readonly INotificationChannelsRepository _notificationChannelsRepository;
@@ -22,6 +23,7 @@ namespace Service.Liquidity.Bot.Services
             ITelegramBotClient telegramBotClient,
             SettingsModel settingsModel
         )
+            : base(logger)
         {
             _logger = logger;
             _notificationChannelsRepository = notificationChannelsRepository;
@@ -33,11 +35,12 @@ namespace Service.Liquidity.Bot.Services
         {
             try
             {
-                await _telegramBotClient.SendTextMessageAsync(_settingsModel.ChatId, text, ParseMode.Html);
+                await RetryPolicy.ExecuteAsync(async () =>
+                    await _telegramBotClient.SendTextMessageAsync(_settingsModel.ChatId, text, ParseMode.Html));
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Failed to SendNotification: {text}");
+                _logger.LogError(ex, "Failed to SendNotification {@text}. {@exMessage}", text, ex.Message);
             }
         }
 
@@ -54,11 +57,13 @@ namespace Service.Liquidity.Bot.Services
                     throw new Exception($"Failed to SendNotification. Channel with id {channelId} not found");
                 }
 
-                await _telegramBotClient.SendTextMessageAsync(channel.ChatId, text, ParseMode.Html);
+                await RetryPolicy.ExecuteAsync(async () =>
+                    await _telegramBotClient.SendTextMessageAsync(_settingsModel.ChatId, text, ParseMode.Html));
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Failed to SendNotification to {channel?.Name} {text}");
+                _logger.LogError(ex, "Failed to SendNotification to {@channel} {@text}. {@exMessage}", channel?.Name,
+                    text, ex.Message);
             }
         }
     }
