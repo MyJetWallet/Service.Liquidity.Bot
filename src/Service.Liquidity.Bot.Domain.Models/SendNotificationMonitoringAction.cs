@@ -21,7 +21,11 @@ namespace Service.Liquidity.Bot.Domain.Models
         [DataMember(Order = 4)]
         public string NotificationChannelId
         {
-            get => ParamValuesByName[nameof(NotificationChannelId)];
+            get
+            {
+                ParamValuesByName.TryGetValue(nameof(NotificationChannelId), out var channelId);
+                return channelId;
+            }
             set => ParamValuesByName[nameof(NotificationChannelId)] = value;
         }
     }
