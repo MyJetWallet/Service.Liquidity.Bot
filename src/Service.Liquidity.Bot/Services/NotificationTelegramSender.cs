@@ -41,6 +41,7 @@ namespace Service.Liquidity.Bot.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to SendNotification {@text}. {@exMessage}", text, ex.Message);
+                throw;
             }
         }
 
@@ -64,6 +65,7 @@ namespace Service.Liquidity.Bot.Services
             {
                 _logger.LogError(ex, "Failed to SendNotification to {@channel} {@text}. {@exMessage}", channel?.Name,
                     text, ex.Message);
+                throw;
             }
         }
     }

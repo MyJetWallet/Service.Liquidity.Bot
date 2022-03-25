@@ -44,30 +44,42 @@ namespace Service.Liquidity.Bot.Subscribers
             {
                 foreach (var rule in message.Rules ?? new List<MonitoringRule>())
                 {
-                    var lastNotificationDate = await _notificationsCache.GetLastNotificationDateAsync(rule.Id);
-
-                    if (rule.NeedsNotification(lastNotificationDate))
-                    {
-                        var action = new SendNotificationMonitoringAction();
-                        rule.ActionsByTypeName[action.TypeName].CopyTo(action);
-
-                        if (string.IsNullOrWhiteSpace(action.NotificationChannelId))
-                        {
-                            await _notificationSender.SendAsync(rule.GetNotificationText());
-                        }
-                        else
-                        {
-                            await _notificationSender.SendAsync(action.NotificationChannelId, rule.GetNotificationText());
-                        }
-
-                        await _notificationsCache.AddOrUpdateAsync(rule.Id, DateTime.UtcNow.AddHours(1));
-                    }
+                    await ProcessRuleAsync(rule);
                 }
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Failed to handle {@message}. {@exMessage}", nameof(PortfolioMonitoringMessage),
                     e.Message);
+            }
+        }
+
+        private async Task ProcessRuleAsync(MonitoringRule rule)
+        {
+            try
+            {
+                var lastNotificationDate = await _notificationsCache.GetLastNotificationDateAsync(rule.Id);
+
+                if (rule.NeedsNotification(lastNotificationDate))
+                {
+                    var action = new SendNotificationMonitoringAction();
+                    rule.ActionsByTypeName[action.TypeName].CopyTo(action);
+
+                    if (string.IsNullOrWhiteSpace(action.NotificationChannelId))
+                    {
+                        await _notificationSender.SendAsync(rule.GetNotificationText());
+                    }
+                    else
+                    {
+                        await _notificationSender.SendAsync(action.NotificationChannelId, rule.GetNotificationText());
+                    }
+
+                    await _notificationsCache.AddOrUpdateAsync(rule.Id, DateTime.UtcNow.AddHours(1));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to ProcessRule. {@rule}", rule.Name);
             }
         }
     }
