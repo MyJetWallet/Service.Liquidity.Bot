@@ -59,7 +59,7 @@ namespace Service.Liquidity.Bot.Services
                 }
 
                 await RetryPolicy.ExecuteAsync(async () =>
-                    await _telegramBotClient.SendTextMessageAsync(_settingsModel.ChatId, text, ParseMode.Html));
+                    await _telegramBotClient.SendTextMessageAsync(channel.ChatId, text, ParseMode.Html));
             }
             catch (Exception ex)
             {
