@@ -23,10 +23,15 @@ namespace Service.Liquidity.Bot.Domain.Models
         {
             get
             {
+                ParamValuesByName ??= new Dictionary<string, string>();
                 ParamValuesByName.TryGetValue(nameof(NotificationChannelId), out var channelId);
                 return channelId;
             }
-            set => ParamValuesByName[nameof(NotificationChannelId)] = value;
+            set
+            {
+                ParamValuesByName ??= new Dictionary<string, string>();
+                ParamValuesByName[nameof(NotificationChannelId)] = value;
+            } 
         }
     }
 }
