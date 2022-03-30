@@ -35,7 +35,7 @@ public static class MonitoringRuleExtensions
         var ruleChecks = rule.Checks ?? new List<PortfolioCheck>();
         var title =
             $"Rule <b>{rule.Name}</b> is {(rule.CurrentState.IsActive ? "active" : "inactive")}:{Environment.NewLine}{rule.Description}";
-        var checkDescriptions = ruleChecks.Select(ch => ch.GetOrGenerateDescription());
+        var checkDescriptions = ruleChecks.Select(ch => ch.GenerateCheckDescription());
         var body = string.Join($"{Environment.NewLine}", checkDescriptions);
 
         return $"{title}{Environment.NewLine}" +
