@@ -18,7 +18,7 @@
     <PackageReference Include="MyJetWallet.Sdk.NoSql" Version="2.1.2" />
     <PackageReference Include="MyJetWallet.Sdk.Service" Version="2.1.7" />
     <PackageReference Include="MyJetWallet.Sdk.ServiceBus" Version="2.2.2" />
-    <PackageReference Include="MyJetWallet.Service.Liquidity.Hedger.Client" Version="1.2.5" />
+    <PackageReference Include="MyJetWallet.Service.Liquidity.Hedger.Client" Version="1.2.6" />
     <PackageReference Include="MyJetWallet.Service.Liquidity.Monitoring.Client" Version="2.3.3" />
     <PackageReference Include="MyJetWallet.Service.Liquidity.TradingPortfolio.Client" Version="1.8.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
