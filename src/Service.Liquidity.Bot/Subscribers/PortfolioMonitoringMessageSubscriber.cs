@@ -38,20 +38,25 @@ namespace Service.Liquidity.Bot.Subscribers
             _subscriber.Subscribe(Handle);
         }
 
-        private async ValueTask Handle(PortfolioMonitoringMessage message)
+        private ValueTask Handle(PortfolioMonitoringMessage message)
         {
-            try
+            _ = Task.Run(async () =>
             {
-                foreach (var rule in message.Rules ?? new List<MonitoringRule>())
+                try
                 {
-                    await ProcessRuleAsync(rule);
+                    foreach (var rule in message.Rules ?? new List<MonitoringRule>())
+                    {
+                        await ProcessRuleAsync(rule);
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Failed to handle {@message}. {@exMessage}", nameof(PortfolioMonitoringMessage),
-                    e.Message);
-            }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "Failed to handle {@Message}. {@ExMessage}", nameof(PortfolioMonitoringMessage),
+                        e.Message);
+                }
+            });
+            
+            return ValueTask.CompletedTask;
         }
 
         private async Task ProcessRuleAsync(MonitoringRule rule)
