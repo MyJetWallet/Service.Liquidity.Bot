@@ -24,6 +24,8 @@ namespace Service.Liquidity.Bot.Modules
                 .SingleInstance().AutoActivate();
             builder.RegisterType<NotificationsNoSqlCache>().As<INotificationsCache>()
                 .SingleInstance().AutoActivate();
+            builder.RegisterType<NewAlertMessageSubscriber>().As<IStartable>()
+                .SingleInstance().AutoActivate();
         }
     }
 }
