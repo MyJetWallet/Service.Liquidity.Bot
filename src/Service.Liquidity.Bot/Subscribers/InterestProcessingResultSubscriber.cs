@@ -34,7 +34,7 @@ namespace Service.Liquidity.Bot.Subscribers
 
         public void Start()
         {
-            _subscriber.Subscribe(Handle);
+            //_subscriber.Subscribe(Handle);
         }
 
         private async ValueTask Handle(InterestProcessingResult message)
