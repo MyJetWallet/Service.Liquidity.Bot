@@ -26,6 +26,8 @@ namespace Service.Liquidity.Bot.Modules
                 .SingleInstance().AutoActivate();
             builder.RegisterType<NewAlertMessageSubscriber>().As<IStartable>()
                 .SingleInstance().AutoActivate();
+            builder.RegisterType<InterestProcessingResultSubscriber>().As<IStartable>()
+                .SingleInstance().AutoActivate();
         }
     }
 }
