@@ -16,8 +16,6 @@ namespace Service.Liquidity.Bot.Modules
             builder.RegisterType<AssetPortfolioStatusSubscriber>().SingleInstance().AutoActivate();
             builder.RegisterType<PortfolioMonitoringMessageSubscriber>().As<IStartable>()
                 .SingleInstance().AutoActivate();
-            builder.RegisterType<HedgeOperationsSubscriber>().As<IStartable>()
-                .SingleInstance().AutoActivate();
             builder.RegisterType<NotificationChannelsNoSqlRepository>().As<INotificationChannelsRepository>()
                 .SingleInstance().AutoActivate();
             builder.RegisterType<NotificationTelegramSender>().As<INotificationSender>()

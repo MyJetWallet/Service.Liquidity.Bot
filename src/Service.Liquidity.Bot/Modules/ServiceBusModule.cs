@@ -3,7 +3,6 @@ using MyJetWallet.Sdk.ServiceBus;
 using MyServiceBus.Abstractions;
 using Service.IntrestManager.Domain.Models;
 using Service.Liquidity.Alerts.Domain.Models.Alerts;
-using Service.Liquidity.Hedger.Domain.Models;
 using Service.Liquidity.Monitoring.Domain.Models;
 
 namespace Service.Liquidity.Bot.Modules
@@ -21,10 +20,6 @@ namespace Service.Liquidity.Bot.Modules
                 TopicQueueType.PermanentWithSingleConnection);
             builder.RegisterMyServiceBusSubscriberSingle<PortfolioMonitoringMessage>(serviceBusClient, 
                 PortfolioMonitoringMessage.TopicName, 
-                queueName, 
-                TopicQueueType.DeleteOnDisconnect);
-            builder.RegisterMyServiceBusSubscriberSingle<HedgeOperation>(serviceBusClient, 
-                HedgeOperation.TopicName, 
                 queueName, 
                 TopicQueueType.DeleteOnDisconnect);
             builder.RegisterMyServiceBusSubscriberBatch<FailedInterestRateMessage>(serviceBusClient, 
