@@ -13,18 +13,17 @@ namespace Service.Liquidity.Bot.Modules
         {
             builder.RegisterInstance(new TelegramBotClient(Program.Settings.BotApiKey)).As<ITelegramBotClient>()
                 .SingleInstance();
-            builder.RegisterType<AssetPortfolioStatusSubscriber>().SingleInstance().AutoActivate();
-            builder.RegisterType<PortfolioMonitoringMessageSubscriber>().As<IStartable>()
-                .SingleInstance().AutoActivate();
             builder.RegisterType<NotificationChannelsNoSqlRepository>().As<INotificationChannelsRepository>()
                 .SingleInstance().AutoActivate();
             builder.RegisterType<NotificationTelegramSender>().As<INotificationSender>()
                 .SingleInstance().AutoActivate();
             builder.RegisterType<NotificationsNoSqlCache>().As<INotificationsCache>()
                 .SingleInstance().AutoActivate();
+            
+            // subs
             builder.RegisterType<NewAlertMessageSubscriber>().As<IStartable>()
                 .SingleInstance().AutoActivate();
-            builder.RegisterType<InterestProcessingResultSubscriber>().As<IStartable>()
+            builder.RegisterType<PortfolioMonitoringMessageSubscriber>().As<IStartable>()
                 .SingleInstance().AutoActivate();
         }
     }
