@@ -46,7 +46,6 @@ namespace Service.Liquidity.Bot.Subscribers
                     return;
                 }
 
-
                 await _notificationSender.SendAsync(message.GetNotificationText());
             }
             catch (Exception e)

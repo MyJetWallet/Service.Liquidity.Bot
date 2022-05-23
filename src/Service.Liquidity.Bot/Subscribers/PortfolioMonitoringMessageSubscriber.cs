@@ -46,6 +46,7 @@ namespace Service.Liquidity.Bot.Subscribers
                 {
                     foreach (var rule in message.Rules ?? new List<MonitoringRule>())
                     {
+                        await Task.Delay(650);
                         await ProcessRuleAsync(rule);
                     }
                 }
@@ -84,7 +85,7 @@ namespace Service.Liquidity.Bot.Subscribers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to ProcessRule. {@rule}", rule.Name);
+                _logger.LogError(ex, "Failed to ProcessRule. {@Rule}", rule.Name);
             }
         }
     }
