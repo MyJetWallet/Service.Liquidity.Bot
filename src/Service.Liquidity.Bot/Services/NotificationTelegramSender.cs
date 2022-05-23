@@ -40,8 +40,8 @@ namespace Service.Liquidity.Bot.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to SendNotification {@text}. {@exMessage}", text, ex.Message);
-                throw;
+                _logger.LogError(ex, "Failed to send message to telegram to chat. {@ChatId}. {@ExMessage}", _settingsModel.ChatId,
+                    ex.Message);
             }
         }
 
@@ -55,7 +55,7 @@ namespace Service.Liquidity.Bot.Services
 
                 if (channel == null)
                 {
-                    throw new Exception($"Failed to SendNotification. Channel with id {channelId} not found");
+                    throw new Exception($"Failed to to send message to telegram. Channel with id {channelId} not found");
                 }
 
                 await RetryPolicy.ExecuteAsync(async () =>
@@ -63,9 +63,8 @@ namespace Service.Liquidity.Bot.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to SendNotification to {@channel} {@text}. {@exMessage}", channel?.Name,
-                    text, ex.Message);
-                throw;
+                _logger.LogError(ex, "Failed to send message to telegram by channel {@Channel}. {@ExMessage}",
+                    channel?.Name, ex.Message);
             }
         }
     }
