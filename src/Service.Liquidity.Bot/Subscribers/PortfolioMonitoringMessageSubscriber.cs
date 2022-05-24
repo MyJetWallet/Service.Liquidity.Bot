@@ -80,7 +80,7 @@ namespace Service.Liquidity.Bot.Subscribers
                         await _notificationSender.SendAsync(action.NotificationChannelId, rule.GetNotificationText());
                     }
 
-                    await _notificationsCache.AddOrUpdateAsync(rule.Id, DateTime.UtcNow.AddHours(1));
+                    await _notificationsCache.AddOrUpdateAsync(rule.Id, DateTime.UtcNow.AddHours(4));
                 }
             }
             catch (Exception ex)
