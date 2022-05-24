@@ -25,7 +25,7 @@ namespace Service.Liquidity.Bot.Subscribers
             ISubscriber<PortfolioMonitoringMessage> subscriber,
             INotificationSender notificationSender,
             INotificationsCache notificationsCache
-            )
+        )
         {
             _subscriber = subscriber;
             _logger = logger;
@@ -56,7 +56,7 @@ namespace Service.Liquidity.Bot.Subscribers
                         e.Message);
                 }
             });
-            
+
             return ValueTask.CompletedTask;
         }
 
@@ -80,7 +80,8 @@ namespace Service.Liquidity.Bot.Subscribers
                         await _notificationSender.SendAsync(action.NotificationChannelId, rule.GetNotificationText());
                     }
 
-                    await _notificationsCache.AddOrUpdateAsync(rule.Id, DateTime.UtcNow.AddHours(4));
+                    await _notificationsCache.AddOrUpdateAsync(rule.Id,
+                        DateTime.UtcNow.Add(MonitoringRuleExtensions.NotificationRemindPeriod));
                 }
             }
             catch (Exception ex)

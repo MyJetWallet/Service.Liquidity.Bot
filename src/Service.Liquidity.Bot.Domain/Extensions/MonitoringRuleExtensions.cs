@@ -6,6 +6,8 @@ namespace Service.Liquidity.Bot.Domain.Extensions;
 
 public static class MonitoringRuleExtensions
 {
+    public static TimeSpan NotificationRemindPeriod { get; set; } = TimeSpan.FromHours(4);
+    
     public static bool NeedsNotification(this MonitoringRule rule, DateTime? lastNotificationDate)
     {
         var action = new SendNotificationMonitoringAction();
@@ -20,7 +22,7 @@ public static class MonitoringRuleExtensions
             return true;
         }
 
-        var timeToRemind = DateTime.UtcNow - lastNotificationDate > TimeSpan.FromMinutes(60);
+        var timeToRemind = DateTime.UtcNow - lastNotificationDate > NotificationRemindPeriod;
 
         if (rule.CurrentState.IsActive && (lastNotificationDate == null || timeToRemind))
         {
