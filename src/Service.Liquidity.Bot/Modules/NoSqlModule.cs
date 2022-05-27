@@ -8,9 +8,10 @@ namespace Service.Liquidity.Bot.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-             builder.RegisterMyNoSqlWriter<NotificationChannelNoSql>(Program.ReloadedSettings(e => e.MyNoSqlWriterUrl), NotificationChannelNoSql.TableName);
-             builder.RegisterMyNoSqlWriter<NotificationNoSql>(Program.ReloadedSettings(e => e.MyNoSqlWriterUrl), NotificationNoSql.TableName);
-
+            builder.RegisterMyNoSqlWriter<NotificationChannelNoSql>(() => Program.Settings.SpotServiceBusHostPort,
+                NotificationChannelNoSql.TableName);
+            builder.RegisterMyNoSqlWriter<NotificationNoSql>(() => Program.Settings.SpotServiceBusHostPort,
+                NotificationNoSql.TableName);
         }
     }
 }

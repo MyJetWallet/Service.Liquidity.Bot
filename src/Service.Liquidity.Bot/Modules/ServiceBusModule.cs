@@ -11,7 +11,9 @@ namespace Service.Liquidity.Bot.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var serviceBusClient = builder.RegisterMyServiceBusTcpClient(Program.ReloadedSettings(e => e.SpotServiceBusHostPort), Program.LogFactory);
+            var serviceBusClient =
+                builder.RegisterMyServiceBusTcpClient(() => Program.Settings.SpotServiceBusHostPort,
+                    Program.LogFactory);
 
             var queueName = "Liquidity-Bot";
             builder.RegisterMyServiceBusSubscriberSingle<AssetPortfolioStatusMessage>(serviceBusClient, 

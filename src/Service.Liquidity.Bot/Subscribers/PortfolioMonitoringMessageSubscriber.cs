@@ -46,7 +46,7 @@ namespace Service.Liquidity.Bot.Subscribers
                 {
                     foreach (var rule in message.Rules ?? new List<MonitoringRule>())
                     {
-                        await Task.Delay(650);
+                        await Task.Delay(850);
                         await ProcessRuleAsync(rule);
                     }
                 }
