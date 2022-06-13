@@ -45,6 +45,20 @@ namespace Service.Liquidity.Bot.Services
             }
         }
 
+        public async Task SendToChat(string chatId, string text)
+        {
+            try
+            {
+                await RetryPolicy.ExecuteAsync(async () =>
+                    await _telegramBotClient.SendTextMessageAsync(chatId, text, ParseMode.Html));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to send message to telegram to chat. {@ChatId}. {@ExMessage}", chatId,
+                    ex.Message);
+            }
+        }
+
         public async Task SendAsync(string channelId, string text)
         {
             NotificationChannel channel = null;
