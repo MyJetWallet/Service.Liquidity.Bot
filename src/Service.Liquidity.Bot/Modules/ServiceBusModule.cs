@@ -16,10 +16,6 @@ namespace Service.Liquidity.Bot.Modules
                     Program.LogFactory);
 
             var queueName = "Liquidity-Bot";
-            builder.RegisterMyServiceBusSubscriberSingle<AssetPortfolioStatusMessage>(serviceBusClient, 
-                AssetPortfolioStatusMessage.TopicName, 
-                queueName, 
-                TopicQueueType.PermanentWithSingleConnection);
             builder.RegisterMyServiceBusSubscriberSingle<PortfolioMonitoringMessage>(serviceBusClient, 
                 PortfolioMonitoringMessage.TopicName, 
                 queueName, 

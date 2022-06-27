@@ -10,6 +10,7 @@ public static class MonitoringRuleExtensions
     
     public static bool NeedsNotification(this MonitoringRule rule, DateTime? lastNotificationDate)
     {
+        lastNotificationDate ??= DateTime.MinValue;
         var action = new SendNotificationMonitoringAction();
 
         if (rule.ActionsByTypeName == null || !rule.ActionsByTypeName.TryGetValue(action.TypeName, out _))
@@ -17,14 +18,19 @@ public static class MonitoringRuleExtensions
             return false;
         }
 
-        if (rule.CurrentState.IsActive != rule.PrevState.IsActive)
+        if (rule.CurrentState == null)
+        {
+            return false;
+        }
+
+        if (rule.CurrentState.IsActive != rule.PrevState?.IsActive)
         {
             return true;
         }
 
         var timeToRemind = DateTime.UtcNow - lastNotificationDate > NotificationRemindPeriod;
 
-        if (rule.CurrentState.IsActive && (lastNotificationDate == null || timeToRemind))
+        if (rule.CurrentState.IsActive && timeToRemind)
         {
             return true;
         }
